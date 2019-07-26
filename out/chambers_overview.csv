@@ -1,0 +1,142 @@
+"","jahr","senat","kammer","richter","reihenfolge","start","year","end","gv","col_red","unicol"
+"1","1998",1,1,"Seidl Grimm Hömig",321,1998-01-01,1998,1998-02-27,"Haas Seibert Steiner Jäger Kühling",1,FALSE
+"2","1998",1,2,"Kühling Jäger Steiner",321,1998-01-01,1998,1998-02-27,"Hömig Grimm Seidl Haas Seibert",2,FALSE
+"3","1998",1,3,"Seidl Seibert Haas",321,1998-01-01,1998,1998-02-27,"Steiner Jäger Kühling Hömig Grimm",1,FALSE
+"4","1998",2,1,"Sommer Jentsch Hassemer",321,1998-01-01,1998,1998-09-29,"Limbach Winter Kruis Kirchhof Graßhof",2,FALSE
+"5","1998",2,2,"Limbach Kruis Winter",132,1998-01-01,1998,1998-09-29,"Kirchhof Graßhof Hassemer Jentsch Sommer",1,FALSE
+"6","1998",2,3,"Limbach Graßhof Kirchhof",132,1998-01-01,1998,1998-09-29,"Hassemer Jentsch Sommer Winter Kruis",2,FALSE
+"7","ab 27/02/1998",1,1,"Papier Grimm Hömig",321,1998-02-27,1998,1999-01-01,"Haas Seibert Steiner Jäger Kühling",1,FALSE
+"8","ab 27/02/1998",1,2,"Kühling Jäger Steiner",321,1998-02-27,1998,1999-01-01,"Hömig Grimm Papier Haas Seibert",2,FALSE
+"9","ab 27/02/1998",1,3,"Papier Seibert Haas",321,1998-02-27,1998,1999-01-01,"Steiner Jäger Kühling Hömig Grimm",1,FALSE
+"10","ab 29/09/1998",2,1,"Sommer Jentsch Broß",321,1998-09-29,1998,1998-10-15,"Winter Hassemer Limbach Kirchhof Graßhof",1,FALSE
+"11","ab 29/09/1998",2,2,"Limbach Winter Hassemer",231,1998-09-29,1998,1998-10-15,"Kirchhof Graßhof Broß Jentsch Sommer",2,FALSE
+"12","ab 29/09/1998",2,3,"Limbach Graßhof Kirchhof",132,1998-09-29,1998,1998-10-15,"Broß Jentsch Sommer Winter Hassemer",2,FALSE
+"13","ab 15 /10/1998",2,1,"Sommer Broß Osterloh",321,1998-10-15,1998,1999-01-01,"Winter Hassemer Limbach Kirchhof Jentsch",2,FALSE
+"14","ab 15 /10/1998",2,2,"Limbach Winter Hassemer",231,1998-10-15,1998,1999-01-01,"Kirchhof Jentsch Osterloh Broß Sommer",2,FALSE
+"15","ab 15 /10/1998",2,3,"Limbach Kirchhof Jentsch",231,1998-10-15,1998,1999-01-01,"Osterloh Broß Sommer Winter Hassemer",1,FALSE
+"16","1999",1,1,"Papier Grimm Hömig",321,1999-01-01,1999,1999-01-11,"Steiner Haas Jäger Kühling",1,FALSE
+"17","1999",1,2,"Kühling Jäger Steiner",321,1999-01-01,1999,1999-01-11,"Hömig Grimm Papier Haas",2,FALSE
+"18","1999",1,3,"Papier Haas Steiner",321,1999-01-01,1999,1999-01-11,"Jäger Kühling Hömig Grimm",0,TRUE
+"19","1999",2,1,"Sommer Broß Osterloh",321,1999-01-01,1999,2000-01-01,"Winter Hassemer Limbach Kirchhof Jentsch",2,FALSE
+"20","1999",2,2,"Limbach Winter Hassemer",231,1999-01-01,1999,2000-01-01,"Kirchhof Jentsch Osterloh Broß Sommer",2,FALSE
+"21","1999",2,3,"Limbach Kirchhof Jentsch",231,1999-01-01,1999,2000-01-01,"Osterloh Broß Sommer Winter Hassemer",1,FALSE
+"22","ab 11/01/1999",1,1,"Papier Grimm Hömig",321,1999-01-11,1999,1999-12-16,"Hohmann-Dennhardt Haas Steiner Jäger Kühling",1,FALSE
+"23","ab 11/01/1999",1,2,"Kühling Jäger Steiner",321,1999-01-11,1999,1999-12-16,"Hömig Grimm Papier Hohmann-Dennhardt Haas",2,FALSE
+"24","ab 11/01/1999",1,3,"Papier Haas Hohmann-Dennhardt",321,1999-01-11,1999,1999-12-16,"Steiner Jäger Kühling Hömig Grimm",1,FALSE
+"25","ab 16/12/1999",1,1,"Papier Hoffmann-Riem  Hömig ",321,1999-12-16,1999,2000-01-01,"Hohmann-Dennhardt Haas Steiner Jäger Kühling",1,FALSE
+"26","ab 16/12/1999",1,2,"Kühling Jäger Steiner",321,1999-12-16,1999,2000-01-01,"Hömig Hoffmann-Riem Papier Hohmann-Dennhardt Haas",2,FALSE
+"27","ab 16/12/1999",1,3,"Papier Haas Hohmann-Dennhardt",321,1999-12-16,1999,2000-01-01,"Steiner Jäger Kühling Hömig Hoffmann-Riem",1,FALSE
+"28","2000",1,1,"Papier Steiner Hoffmann-Riem",321,2000-01-01,2000,2001-01-01,"Hohmann-Dennhardt Haas Hömig Jäger Kühling",1,FALSE
+"29","2000",1,2,"Kühling Jäger Hömig",321,2000-01-01,2000,2001-01-01,"Hoffmann-Riem Steiner Papier Hohmann-Dennhardt Haas",2,FALSE
+"30","2000",1,3,"Papier Haas Hohmann-Dennhardt",321,2000-01-01,2000,2001-01-01,"Hömig Jäger Kühling Hoffmann-Riem Steiner",1,FALSE
+"31","2000",2,1,"Sommer Broß Osterloh",321,2000-01-01,2000,2001-01-01,"DiFabio Winter Hassemer Limbach Jentsch",2,FALSE
+"32","2000",2,2,"Sommer Osterloh DiFabio",321,2000-01-01,2000,2001-01-01,"Winter Hassemer Limbach Jentsch Broß",2,FALSE
+"33","2000",2,3,"Limbach Winter Hassemer",231,2000-01-01,2000,2001-01-01,"DiFabio Jentsch Osterloh Broß Sommer",2,FALSE
+"34","2000",2,4,"Limbach Jentsch DiFabio",321,2000-01-01,2000,2001-01-01,"Osterloh Broß Sommer Winter Hassemer",1,FALSE
+"35","2001",1,1,"Papier Steiner Hoffmann-Riem",321,2001-01-01,2001,2001-01-22,"Hohmann-Dennhardt Haas Hömig Jäger Kühling",1,FALSE
+"36","2001",1,2,"Kühling Jäger Hömig",321,2001-01-01,2001,2001-01-22,"Hoffmann-Riem Steiner Papier Hohmann-Dennhardt Haas",2,FALSE
+"37","2001",1,3,"Papier Haas Hohmann-Dennhardt",321,2001-01-01,2001,2001-01-22,"Hömig Jäger Kühling Hoffmann-Riem Steiner",1,FALSE
+"41","2001",2,1,"Sommer Broß Mellinghoff",321,2001-01-01,2001,2002-01-01,"DiFabio Osterloh Hassemer Limbach Jentsch",1,FALSE
+"42","2001",2,2,"Sommer Osterloh DiFabio",321,2001-01-01,2001,2002-01-01,"Mellinghoff Hassemer Limbach Jentsch Broß",2,FALSE
+"43","2001",2,3,"Limbach Hassemer Mellinghoff",321,2001-01-01,2001,2002-01-01,"DiFabio Jentsch Broß Sommer Osterloh",2,FALSE
+"44","2001",2,4,"Limbach  Jentsch DiFabio",321,2001-01-01,2001,2002-01-01,"Mellinghoff Broß Sommer Osterloh Hassemer",1,FALSE
+"38","ab 22/01/2001",1,1,"Papier Steiner Hoffmann-Riem",321,2001-01-22,2001,2002-01-01,"Hohmann-Dennhardt Haas Bryde Hömig Jäger",1,FALSE
+"39","ab 22/01/2001",1,2,"Jäger Hömig Bryde",321,2001-01-22,2001,2002-01-01,"Hoffmann-Riem Steiner Papier Hohmann-Dennhardt Haas",2,FALSE
+"40","ab 22/01/2001",1,3,"Papier Haas Hohmann-Dennhardt",321,2001-01-22,2001,2002-01-01,"Bryde Hömig Jäger Hoffmann-Riem Steiner",1,FALSE
+"45","2002",1,1,"Papier Steiner Hoffmann-Riem",321,2002-01-01,2002,2003-01-01,"Hohmann-Dennhardt Haas Bryde Hömig Jäger",1,FALSE
+"46","2002",1,2,"Jäger Hömig Bryde",321,2002-01-01,2002,2003-01-01,"Hoffmann-Riem Steiner Papier Hohmann-Dennhardt Haas",2,FALSE
+"47","2002",1,3,"Papier Haas Hohmann-Dennhardt",321,2002-01-01,2002,2003-01-01,"Bryde Hömig Jäger Hoffmann-Riem Steiner",1,FALSE
+"48","2002",2,1,"Sommer Broß Mellinghoff",321,2002-01-01,2002,2002-04-10,"DiFabio Osterloh Hassemer Limbach Jentsch",1,FALSE
+"49","2002",2,2,"Sommer Osterloh DiFabio",321,2002-01-01,2002,2002-04-10,"Mellinghoff Hassemer Limbach Jentsch Broß",2,FALSE
+"50","2002",2,3,"Limbach Hassemer Mellinghoff",321,2002-01-01,2002,2002-04-10,"DiFabio Jentsch Broß Sommer Osterloh",2,FALSE
+"54","2002",2,4,"Limbach Jentsch DiFabio",321,2002-01-01,2002,2003-01-01,"Mellinghoff Broß Sommer Osterloh Hassemer",1,FALSE
+"51","ab 10/04/2002",2,1,"Sommer DiFabio Lübbe-Wolff",321,2002-04-10,2002,2003-01-01,"Broß Jentsch Mellinghoff Osterloh Hassemer",2,FALSE
+"52","ab 10/04/2002",2,2,"Jentsch Broß Lübbe-Wolff",321,2002-04-10,2002,2003-01-01,"Mellinghoff Osterloh Hassemer DiFabio Sommer",1,FALSE
+"53","ab 10/04/2002",2,3,"Hassemer Osterloh Mellinghoff",321,2002-04-10,2002,2003-01-01,"Lübbe-Wolff DiFabio Sommer Broß Jentsch",2,FALSE
+"55","2003",1,1,"Papier Haas Hoffmann-Riem",321,2003-01-01,2003,2004-01-01,"Hohmann-Dennhardt Steiner Bryde Hömig Jäger",1,FALSE
+"56","2003",1,2,"Jäger Hömig Bryde",321,2003-01-01,2003,2004-01-01,"Hoffmann-Riem Haas Papier Hohmann-Dennhardt Steiner",2,FALSE
+"57","2003",1,3,"Papier Steiner Hohmann-Dennhardt",321,2003-01-01,2003,2004-01-01,"Bryde Hömig Jäger Hoffmann-Riem Haas",1,FALSE
+"58","2003",2,1,"Sommer DiFabio Lübbe-Wolff",321,2003-01-01,2003,2003-07-31,"Broß Jentsch Mellinghoff Osterloh Hassemer",2,FALSE
+"59","2003",2,2,"Jentsch Broß Lübbe-Wolff",321,2003-01-01,2003,2003-07-31,"Mellinghoff Osterloh Hassemer DiFabio Sommer",1,FALSE
+"60","2003",2,3,"Hassemer Osterloh Mellinghoff",321,2003-01-01,2003,2003-07-31,"Lübbe-Wolff DiFabio Sommer Broß Jentsch",2,FALSE
+"61","ab 31/07/2003",2,1,"Broß DiFabio Gerhardt",321,2003-07-31,2003,2004-01-01,"Lübbe-Wolff Jentsch Mellinghoff Osterloh Hassemer",1,FALSE
+"62","ab 31/07/2003",2,2,"Jentsch Broß Lübbe-Wolff",312,2003-07-31,2003,2004-01-01,"Mellinghoff Osterloh Hassemer Gerhardt DiFabio",1,FALSE
+"63","ab 31/07/2003",2,3,"Hassemer Osterloh Mellinghoff",321,2003-07-31,2003,2004-01-01,"Gerhardt DiFabio Broß Lübbe-Wolff Jentsch",2,FALSE
+"64","ab 01/01/2004",1,1,"Papier Haas Hoffmann-Riem",321,2004-01-01,2004,2004-10-29,"Hohmann-Dennhardt Steiner Bryde Hömig Jäger",1,FALSE
+"65","2004",1,2,"Jäger Hömig Bryde",321,2004-01-01,2004,2004-10-29,"Hoffmann-Riem Haas Papier Hohmann-Dennhardt Steiner",2,FALSE
+"66","2004",1,3,"Papier Steiner Hohmann-Dennhardt",321,2004-01-01,2004,2004-10-29,"Bryde Hömig Jäger Hoffmann-Riem Haas",1,FALSE
+"67","2004",2,1,"Broß DiFabio Gerhardt",321,2004-01-01,2004,2005-01-01,"Lübbe-Wolff Jentsch Mellinghoff Osterloh Hassemer",1,FALSE
+"68","2004",2,2,"Jentsch Broß Lübbe-Wolff",312,2004-01-01,2004,2005-01-01,"Mellinghoff Osterloh Hassemer Gerhardt DiFabio",1,FALSE
+"69","2004",2,3,"Hassemer Osterloh Mellinghoff",321,2004-01-01,2004,2005-01-01,"Gerhardt DiFabio Broß Lübbe-Wolff Jentsch",2,FALSE
+"70","ab 29/10/2004",1,1,"Papier Haas Hoffmann-Riem",321,2004-10-29,2004,2005-01-01,"Hohmann-Dennhardt Steiner Gaier Bryde Hömig",1,FALSE
+"71","ab 29/10/2004",1,2,"Hömig Bryde Gaier",321,2004-10-29,2004,2005-01-01,"Hoffmann-Riem Haas Papier Hohmann-Dennhardt Steiner",2,FALSE
+"72","ab 29/10/2004",1,3,"Papier Steiner Hohmann-Dennhardt",321,2004-10-29,2004,2005-01-01,"Gaier Bryde Hömig Hoffmann-Riem Haas",1,FALSE
+"73","ab 01/01/ 2005",1,1,"Papier Hohmann-Dennhardt Hoffmann-Riem",321,2005-01-01,2005,2006-01-01,"Gaier Steiner Bryde Hömig Haas",2,FALSE
+"74","2005",1,2,"Haas Hömig Bryde",321,2005-01-01,2005,2006-01-01,"Hoffmann-Riem Hohmann-Dennhardt Papier Gaier Steiner",1,FALSE
+"75","2005",1,3,"Papier Steiner Gaier",321,2005-01-01,2005,2006-01-01,"Bryde Hömig Haas Hoffmann-Riem Hohmann-Dennhardt",1,FALSE
+"76","2005",2,1,"Broß DiFabio Lübbe-Wolff",321,2005-01-01,2005,2005-10-01,"Gerhardt Jentsch Mellinghoff Osterloh Hassemer",1,FALSE
+"77","2005",2,2,"Jentsch Broß Gerhardt",321,2005-01-01,2005,2005-10-01,"Mellinghoff Osterloh Hassemer Lübbe-Wolff DiFabio",1,FALSE
+"78","2005",2,3,"Hassemer Osterloh Mellinghoff",321,2005-01-01,2005,2005-10-01,"Lübbe-Wolff DiFabio Broß Gerhardt Jentsch",2,FALSE
+"79","ab 01/10/2005",2,1,"Hassemer DiFabio Landau",321,2005-10-01,2005,2006-01-01,"Gerhardt Lübbe-Wolff Broß Mellinghoff Osterloh",1,FALSE
+"80","ab 01/10/2005",2,2,"Broß Lübbe-Wolff Gerhardt",321,2005-10-01,2005,2006-01-01,"Mellinghoff Osterloh Landau DiFabio Hassemer",2,FALSE
+"81","ab 01/10/2005",2,3,"Broß Osterloh Mellinghoff",321,2005-10-01,2005,2006-01-01,"Landau DiFabio Hassemer Gerhardt Lübbe-Wolff",1,FALSE
+"82","ab 01/01/2006",1,1,"Papier Hohmann-Dennhardt Hoffmann-Riem",321,2006-01-01,2006,2006-04-26,"Gaier Steiner Bryde Hömig Haas",2,FALSE
+"83","2006",1,2,"Haas Hömig Bryde",321,2006-01-01,2006,2006-04-26,"Hoffmann-Riem Hohmann-Dennhardt Papier Gaier Steiner",1,FALSE
+"84","2006",1,3,"Papier Steiner Gaier",321,2006-01-01,2006,2006-04-26,"Bryde Hömig Haas Hoffmann-Riem Hohmann-Dennhardt",1,FALSE
+"85","2006",2,1,"Hassemer DiFabio Landau",321,2006-01-01,2006,2007-01-01,"Gerhardt Lübbe-Wolff Broß Mellinghoff Osterloh",1,FALSE
+"86","2006",2,2,"Broß Lübbe-Wolff Gerhardt",321,2006-01-01,2006,2007-01-01,"Mellinghoff Osterloh Landau DiFabio Hassemer",2,FALSE
+"87","2006",2,3,"Broß Osterloh Mellinghoff",321,2006-01-01,2006,2007-01-01,"Landau DiFabio Hassemer Gerhardt Lübbe-Wolff",1,FALSE
+"88","ab 26/04/2006",1,1,"Papier Hohmann-Dennhardt Hoffmann-Riem",321,2006-04-26,2006,2006-10-02,"Gaier Steiner Eichberger Bryde Haas",2,FALSE
+"89","ab 26/04/2006",1,2,"Haas Bryde Eichberger",321,2006-04-26,2006,2006-10-02,"Hoffmann-Riem Hohmann-Dennhardt Papier Gaier Steiner",1,FALSE
+"90","ab 26/04/2006",1,3,"Papier Steiner Gaier",321,2006-04-26,2006,2006-10-02,"Eichberger Bryde Haas Hoffmann-Riem Hohmann-Dennhardt",1,FALSE
+"91","ab 02/10/2006",1,1,"Papier Hohmann-Dennhardt Hoffmann-Riem",321,2006-10-02,2006,2007-01-01,"Gaier Steiner Schluckebier Eichberger Bryde",2,FALSE
+"92","ab 02/10/2006",1,2,"Bryde Eichberger Schluckebier",321,2006-10-02,2006,2007-01-01,"Hoffmann-Riem Hohmann-Dennhardt Papier Gaier Steiner",1,FALSE
+"93","ab 02/10/2006",1,3,"Papier Steiner Gaier",321,2006-10-02,2006,2007-01-01,"Schluckebier Eichberger Bryde Hoffmann-Riem Hohmann-Dennhardt",1,FALSE
+"94","ab 01/01/ 2007",1,1,"Papier Hohmann-Dennhardt Hoffmann-Riem",321,2007-01-01,2007,2007-09-30,"Gaier Steiner Schluckebier Eichberger Bryde",2,FALSE
+"95","2007",1,2,"Bryde Eichberger Schluckebier",321,2007-01-01,2007,2007-09-30,"Hoffmann-Riem Hohmann-Dennhardt Papier Gaier Steiner",1,FALSE
+"96","2007",1,3,"Papier Steiner Gaier",321,2007-01-01,2007,2007-09-30,"Schluckebier Eichberger Bryde Hoffmann-Riem Hohmann-Dennhardt",1,FALSE
+"97","2007",2,1,"Hassemer DiFabio Landau",321,2007-01-01,2007,2008-01-01,"Gerhardt Lübbe-Wolff Broß Mellinghoff Osterloh",1,FALSE
+"98","2007",2,2,"Broß Lübbe-Wolff Gerhardt",321,2007-01-01,2007,2008-01-01,"Mellinghoff Osterloh Landau DiFabio Hassemer",2,FALSE
+"99","2007",2,3,"Broß Osterloh Mellinghoff",321,2007-01-01,2007,2008-01-01,"Landau DiFabio Hassemer Gerhardt Lübbe-Wolff",1,FALSE
+"100","ab 30/09/2007",1,1,"Papier Hohmann-Dennhardt Hoffmann-Riem",321,2007-09-30,2007,2008-01-01,"Kirchhof Gaier Schluckebier Eichberger Bryde",2,FALSE
+"101","ab 30/09/2007",1,2,"Bryde Eichberger Schluckebier",321,2007-09-30,2007,2008-01-01,"Hoffmann-Riem Hohmann-Dennhardt Papier Kirchhof Gaier",1,FALSE
+"102","ab 30/09/2007",1,3,"Papier Gaier Kirchhof",321,2007-09-30,2007,2008-01-01,"Schluckebier Eichberger Bryde Hoffmann-Riem Hohmann-Dennhardt",1,FALSE
+"103","ab 01/01/2008",1,1,"Papier Hoffmann-Riem Eichberger",321,2008-01-01,2008,2008-04-02,"Schluckebier Bryde Kirchhof Gaier Hohmann-Dennhardt",1,FALSE
+"104","2008",1,2,"Hohmann-Dennhardt Gaier Kirchhof",321,2008-01-01,2008,2008-04-02,"Eichberger Hoffmann-Riem Papier Schluckebier Bryde",2,FALSE
+"105","2008",1,3,"Papier Bryde Schluckebier",321,2008-01-01,2008,2008-04-02,"Kirchhof Gaier Hohmann-Dennhardt Eichberger Hoffmann-Riem",1,FALSE
+"106","2008",2,1,"Hassemer DiFabio Landau",321,2008-01-01,2008,2008-05-07,"Gerhardt Lübbe-Wolff Broß Mellinghoff Osterloh",1,FALSE
+"107","2008",2,2,"Broß Lübbe-Wolff Gerhardt",321,2008-01-01,2008,2008-05-07,"Mellinghoff Osterloh Landau DiFabio Hassemer",2,FALSE
+"108","2008",2,3,"Broß Osterloh Mellinghoff",321,2008-01-01,2008,2008-05-07,"Landau DiFabio Hassemer Gerhardt Lübbe-Wolff",1,FALSE
+"109","ab 02/04/2008",1,1,"Papier Eichberger Masing",321,2008-04-02,2008,2009-01-01,"Schluckebier Bryde Kirchhof Gaier Hohmann-Dennhardt",1,FALSE
+"110","ab 02/04/2008",1,2,"Hohmann-Dennhardt Gaier Kirchhof",321,2008-04-02,2008,2009-01-01,"Masing Eichberger Papier Schluckebier Bryde",2,FALSE
+"111","ab 02/04/2008",1,3,"Papier Bryde Schluckebier",321,2008-04-02,2008,2009-01-01,"Kirchhof Gaier Hohmann-Dennhardt Masing Eichberger",1,FALSE
+"112","ab 07/05/2008",2,1,"Voßkuhle Osterloh Mellinghoff",132,2008-05-07,2008,2009-01-01,"Landau DiFabio Broß Gerhardt Lübbe-Wolff",2,FALSE
+"113","ab 07/05/2008",2,2,"Broß DiFabio Landau",321,2008-05-07,2008,2009-01-01,"Gerhardt Lübbe-Wolff Mellinghoff Voßkuhle Osterloh",0,TRUE
+"114","ab 07/05/2008",2,3,"Mellinghoff Lübbe-Wolff Gerhardt",321,2008-05-07,2008,2009-01-01,"Voßkuhle Osterloh Landau DiFabio Broß",2,FALSE
+"115","ab 01/01/2009",1,1,"Papier Eichberger Masing",321,2009-01-01,2009,2010-01-01,"Schluckebier Bryde Kirchhof Gaier Hohmann-Dennhardt",1,FALSE
+"116","2009",1,2,"Hohmann-Dennhardt Gaier Kirchhof",321,2009-01-01,2009,2010-01-01,"Masing Eichberger Papier Schluckebier Bryde",2,FALSE
+"117","2009",1,3,"Papier Bryde Schluckebier",321,2009-01-01,2009,2010-01-01,"Kirchhof Gaier Hohmann-Dennhardt Masing Eichberger",1,FALSE
+"118","2009",2,1,"Osterloh Mellinghoff Gerhardt ",321,2009-01-01,2009,2010-01-01,"Landau DiFabio Broß Voßkuhle Lübbe-Wolff",2,FALSE
+"119","2009",2,2,"Broß DiFabio Landau",321,2009-01-01,2009,2010-01-01,"Voßkuhle Lübbe-Wolff Mellinghoff Gerhardt Osterloh",0,TRUE
+"120","2009",2,3,"Voßkuhle Mellinghoff Lübbe-Wolff",132,2009-01-01,2009,2010-01-01,"Gerhardt Osterloh Landau DiFabio Broß",2,FALSE
+"121","2010",1,1,"Papier Eichberger Masing",321,2010-01-01,2010,2010-03-15,"Schluckebier Bryde Kirchhof Gaier Hohmann-Dennhardt",1,FALSE
+"122","2010",1,2,"Hohmann-Dennhardt Gaier Kirchhof",321,2010-01-01,2010,2010-03-15,"Masing Eichberger Papier Schluckebier Bryde",2,FALSE
+"123","2010",1,3,"Papier Bryde Schluckebier",321,2010-01-01,2010,2010-03-15,"Kirchhof Gaier Hohmann-Dennhardt Masing Eichberger",1,FALSE
+"124","2010",2,1,"Osterloh Mellinghoff Gerhardt ",321,2010-01-01,2010,2010-11-16,"Landau DiFabio Broß Voßkuhle Lübbe-Wolff",2,FALSE
+"125","2010",2,2,"Broß DiFabio Landau",321,2010-01-01,2010,2010-11-16,"Voßkuhle Lübbe-Wolff Mellinghoff Gerhardt Osterloh",0,TRUE
+"126","2010",2,3,"Voßkuhle Mellinghoff Lübbe-Wolff",132,2010-01-01,2010,2010-11-16,"Gerhardt Osterloh Landau DiFabio Broß",2,FALSE
+"127","ab 15/03/2010",1,1,"Kirchhof Eichberger Masing",321,2010-03-15,2010,2011-01-01,"Schluckebier Bryde Paulus Gaier Hohmann-Dennhardt",1,FALSE
+"128","ab 15/03/2010",1,2,"Hohmann-Dennhardt Gaier Paulus",321,2010-03-15,2010,2011-01-01,"Masing Eichberger Kirchhof Schluckebier Bryde",2,FALSE
+"129","ab 15/03/2010",1,3,"Kirchhof Bryde Schluckebier",321,2010-03-15,2010,2011-01-01,"Paulus Gaier Hohmann-Dennhardt Masing Eichberger",1,FALSE
+"130","ab 16/11/2010",2,1,"Voßkuhle Gerhardt Landau",321,2010-11-16,2010,2011-01-01,"Hermanns DiFabio Huber Lübbe-Wolff Mellinghoff",2,FALSE
+"131","ab 16/11/2010",2,2,"DiFabio Gerhardt Hermanns",321,2010-11-16,2010,2011-01-01,"Huber Lübbe-Wolff Mellinghoff Landau Voßkuhle",2,FALSE
+"132","ab 16/11/2010",2,3,"Mellinghoff Lübbe-Wolff Huber",321,2010-11-16,2010,2011-01-01,"Landau Gerhardt Voßkuhle Hermanns DiFabio",1,FALSE
+"133","ab 01/01/2011",1,1,"Kirchhof Eichberger Masing",321,2011-01-01,2011,2011-02-02,"Schluckebier Bryde Paulus Gaier Hohmann-Dennhardt",1,FALSE
+"134","2011",1,2,"Hohmann-Dennhardt Gaier Paulus",321,2011-01-01,2011,2011-02-02,"Masing Eichberger Kirchhof Schluckebier Bryde",2,FALSE
+"135","2011",1,3,"Kirchhof Bryde Schluckebier",321,2011-01-01,2011,2011-02-02,"Paulus Gaier Hohmann-Dennhardt Masing Eichberger",1,FALSE
+"136","2011",2,1,"Voßkuhle Gerhardt Landau",321,2011-01-01,2011,2012-01-01,"Hermanns DiFabio Huber Lübbe-Wolff Mellinghoff",2,FALSE
+"137","2011",2,2,"DiFabio Gerhardt Hermanns",321,2011-01-01,2011,2012-01-01,"Huber Lübbe-Wolff Mellinghoff Landau Voßkuhle",2,FALSE
+"138","2011",2,3,"Mellinghoff Lübbe-Wolff Huber",321,2011-01-01,2011,2012-01-01,"Landau Gerhardt Voßkuhle Hermanns DiFabio",1,FALSE
+"139","ab 02/02/2011",1,1,"Kirchhof Eichberger Masing",321,2011-02-02,2011,2012-01-01,"Bär Schluckebier Britz Paulus Gaier",1,FALSE
+"140","ab 02/02/2011",1,2,"Gaier Paulus Britz",321,2011-02-02,2011,2012-01-01,"Masing Eichberger Kirchhof Bär Schluckebier",2,FALSE
+"141","ab 02/02/2011",1,3,"Kirchhof Schluckebier Bär",321,2011-02-02,2011,2012-01-01,"Britz Paulus Gaier Masing Eichberger",1,FALSE
