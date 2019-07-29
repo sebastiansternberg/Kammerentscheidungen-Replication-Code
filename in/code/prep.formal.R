@@ -2,15 +2,16 @@
 ####################
 source("in/code/functions.R") # helper functions
 
-formal <- read.csv("in/data-input/kammer-formal_utf.csv", sep=";")
+formal <- read.csv("in/data-input/kammer-formal_utf.csv", sep=";", encoding = "UTF-8")
 
 # gen start of judge terms
-formal$start <- jahr.to.date(formal$jahr)
-formal$year <- as.numeric(format(formal$start, "%Y"))
+formal$start <- jahr.to.date(formal$jahr) #code start year of the term
+formal$year <- as.numeric(format(formal$start, "%Y")) #extract year
 
 # gen end of judge terms (if not specified)
 formal <- formal[order(formal$senat, formal$kammer),]
 formal$end <- as.Date(NA)
+
 for (i in 1:nrow(formal)){
   if (formal$year[i+1]>=formal$year[i] & !is.na(formal$year[i+1]))
     formal$end[i] <- formal$start[i+1] # take next if next is not 1998
