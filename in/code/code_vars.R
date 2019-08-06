@@ -14,17 +14,17 @@ real_c <- formal_c <- ersetzt_c <- ersatz_c <- rest_c <- list()
 
 for (i in 1:length(real)){
   # color of sets: 0-3
-  real_c[[i]] <- sum(is.red(real[[i]]))
-  formal_c[[i]] <- sum(is.red(formal[[i]]))
+  real_c[[i]] <- sum(is.red(real[[i]])) #which of the judges in the real chamber are red?
+  formal_c[[i]] <- sum(is.red(formal[[i]])) #which of the judges in the chamber according to RoP are red?
   
   # wechsel and set help variables
-  wechsel[[i]] <- as.numeric(!setequal(real[[i]], formal[[i]]))
-  ersetzt[[i]] <- zero.as.NA(setdiff(formal[[i]], real[[i]]))
-    ersetzt_c[[i]] <- is.red(ersetzt[[i]])
-  ersatz[[i]] <- zero.as.NA(setdiff(real[[i]], formal[[i]]))
-    ersatz_c[[i]] <- is.red(ersatz[[i]])
-  rest[[i]] <- zero.as.NA(setdiff(real[[i]], ersatz[[i]]))
-    rest_c[[i]] <- is.red(rest[[i]])
+  wechsel[[i]] <- as.numeric(!setequal(real[[i]], formal[[i]])) #how many changes
+  ersetzt[[i]] <- zero.as.NA(setdiff(formal[[i]], real[[i]])) #who is replacing whom?
+    ersetzt_c[[i]] <- is.red(ersetzt[[i]]) #is it a red judge who is to be replaced?
+  ersatz[[i]] <- zero.as.NA(setdiff(real[[i]], formal[[i]])) 
+    ersatz_c[[i]] <- is.red(ersatz[[i]]) #is it a red judge who is replacing?
+  rest[[i]] <- zero.as.NA(setdiff(real[[i]], ersatz[[i]])) #which are the remaining judges of that chamber?
+    rest_c[[i]] <- is.red(rest[[i]]) #is one of the remaining a red judge?
 }
 
 
@@ -37,7 +37,7 @@ abw1 <- abw2 <- list()
 store1 <- store2 <- NULL
 for (i in 1:length(alldays)){
   update1 <- unique(as.character(unlist(real[which(out$date==alldays[i] & out$senat==1)]))) # wer war nachweislich anwesend
-  update2 <- unique(as.character(unlist(real[which(out$date==alldays[i] & out$senat==2)])))
+  update2 <- unique(as.character(unlist(real[which(out$date==alldays[i] & out$senat==2)]))) #same for the second senate
   tmp1 <- zero.as.NA(unlist(ersetzt[which(out$date==alldays[i] & out$senat==1)])) # wer war an Tag nachweislich abwesend?
   tmp2 <- zero.as.NA(unlist(ersetzt[which(out$date==alldays[i] & out$senat==2)])) 
   

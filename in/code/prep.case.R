@@ -9,7 +9,7 @@ source("in/code/functions.R") # helper functions
 # I. Check data
 ###############
 
-case <- read.table("in/data-input/judicialData_Sep16.txt", sep="\t")
+case <- read.table("in/data-input/judicialData_Sep16.txt", sep="\t", encoding = "UTF-8")
 names(case) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richter_raw", "richter_txt", "richter_cit", "Anordnung", "link")
 
 
@@ -21,7 +21,7 @@ names(case) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richte
   richter[richter=="None"] <- NA
   
   # no of richter
-  nrichter <- unlist(lapply(richter.split(richter), length))
+  nrichter <- unlist(lapply(richter.split(richter), length)) #for our analysis, only the decisions with 3 judges are relevant (8 are Senate decisions)
   
   # impute from raw for less than 3 richter
   allr_case <- unique(unlist(richter.split(richter)))
@@ -31,7 +31,7 @@ names(case) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richte
   
   case$richter=richter; rm(richter)
   
-#   # BUG REPORT FOR BVG
+#   # BUG REPORT FOR BVerfG
 #   for(i in 1:nrow(case)) case$okrichter[i] <- all(richter.split(clean.names(case$richter_txt[i]))[[1]]%in%richter.split(clean.names(case$richter_cit[i]))[[1]])
 #   bug=case[case$okrichter==F, str_detect(names(case), "richter|link")]
 #   write.csv(case[case$okrichter==F, str_detect(names(case), "richter|link")], "out/website_bugs/inkonsistenterichter.csv")
@@ -54,8 +54,8 @@ names(case) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richte
     #case$link[is.na(case$kammer) & nrichter==3]
     
     # BUG REPORT FOR BVG
-    write.csv(case$link[case$kammer_cit!=case$kammer_txt & !is.na(case$kammer_cit) & !is.na(case$kammer_txt)],
-              "out/website_bugs/falschekammer.csv") # 10 typos on website citation - txt version is correct
+    # write.csv(case$link[case$kammer_cit!=case$kammer_txt & !is.na(case$kammer_cit) & !is.na(case$kammer_txt)],
+    #           "out/website_bugs/falschekammer.csv") # 10 typos on website citation - txt version is correct
 
 # CHECK IF ALL RICHTER FOUND IN BOTH CASE AND MACRO DATA 
 print(str_c("case richter not in allr: ", allr_case[!allr_case%in%allr]))

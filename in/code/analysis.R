@@ -35,7 +35,8 @@ make.table(d[d$senat==2,], "out/dtab2.tex")
 m <- glm(gv_viol ~ crit, data=d, family = "binomial")
 m1 <- glm(gv_viol ~ crit, data=d[d$senat==1,], family = "binomial")
 m2 <- glm(gv_viol ~ crit, data=d[d$senat==2,], family = "binomial")
-stargazer(m, m1, m2
+stargazer(m, m1, m2, 
+          type = "txt"
           , digits = 1
           , dep.var.caption = "RoP deviation"
           , dep.var.labels.include = F
@@ -48,7 +49,7 @@ stargazer(m, m1, m2
           , notes = "$*: p < 0.05$"
           , notes.align = "r"
           , notes.append = FALSE
-          , out = "out/regtable.tex"
+         # , out = "out/regtable.tex"
           )
 
 #Signs point in the predicted direction (violation is more likely in critical cases).

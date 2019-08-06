@@ -17,6 +17,9 @@ for (i in 1:nrow(formal)){
     formal$end[i] <- formal$start[i+1] # take next if next is not 1998
   else formal$end[i] <- as.Date(str_c("01/01/", formal$year[i]+1), "%d/%m/%Y") # else take 01/01/endyear+1 as end
 }
+
+#Now we have the beginning and the end of each Chamber constellation possible.
+
 # back to nice order
 formal <- formal[order(formal$start, formal$senat, formal$kammer),]
 
@@ -28,19 +31,23 @@ formal$richter <- clean.names(formal$richter)
 # reihenfolge as list
 rf <- lapply(str_split(formal$reihenfolge, ""), as.numeric)
 
+#This is the crucial part: coding who is replacing whom from the other chambers:
+
 ### eintragen der ersetzer nach gv aus anderen Kammern
 gv <- list()
 for (i in 1:nrow(formal)){
   # get set of replacing kammern
   set <- formal[formal$start==formal$start[i] & formal$senat==formal$senat[i] &  formal$kammer!=formal$kammer[i],]
   # encode senate/kammer-specific replacement rules
+  #For the first Senate:
   if(formal$senat[i]==1){
-    if(formal$kammer[i]==1) gv[[i]] <- c(get.gv(3), get.gv(2))
-    if(formal$kammer[i]==2) gv[[i]] <- c(get.gv(1), get.gv(3))
-    if(formal$kammer[i]==3) gv[[i]] <- c(get.gv(2), get.gv(1))
-  }
+    if(formal$kammer[i]==1) gv[[i]] <- c(get.gv(3), get.gv(2)) #for the first Chamber, the replacement is from the 3. Chamber first and the the second chamber
+    if(formal$kammer[i]==2) gv[[i]] <- c(get.gv(1), get.gv(3)) #for the second chamber, replacement from 1. Chamber then third
+    if(formal$kammer[i]==3) gv[[i]] <- c(get.gv(2), get.gv(1)) #for the third chamber, replacement from 2. chamber then first
+  } 
+  #Now for the Second Senate:
   if(formal$senat[i]==2 & !any(set$kammer==4) & formal$kammer[i]!=4){
-    if(formal$kammer[i]==1) gv[[i]] <- c(get.gv(2), get.gv(3))
+    if(formal$kammer[i]==1) gv[[i]] <- c(get.gv(2), get.gv(3)) #
     if(formal$kammer[i]==2) gv[[i]] <- c(get.gv(3), get.gv(1))
     if(formal$kammer[i]==3) gv[[i]] <- c(get.gv(1), get.gv(2))
   }
@@ -56,7 +63,7 @@ for (i in 1:nrow(formal)){
 }
 formal$gv <- list.collapse(gv)
 
-# check: immer 5 mögliche Ersetzer
+# check: immer 5 mögliche Ersetzer (8 - 2 in the chamber - 1 dropping)
 table(unlist(lapply(gv, length)))
 # except: 1.1.99-11.1.99 - unterbesetzung- nur 7 richter
 formal[which(unlist(lapply(gv, length))==4),]
@@ -65,9 +72,10 @@ formal[which(unlist(lapply(gv, length))==4),]
 allr <- sort(unique(unlist(richter.split(formal$richter))))
 
 
+#Now we have to merge the nominating parties to the judges:
 ####### get richter farben
 #########################################
-col <- read.csv("in/data-input/Liste_Richter_1_utf.csv", sep="^")
+col <- read.csv("in/data-input/Liste_Richter_1_utf.csv", sep="^", encoding = "UTF-8")
 
 # clean names
 col$last_name_r <- str_trim(clean.names(col$last_name_r))
