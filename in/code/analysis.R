@@ -36,7 +36,7 @@ m <- glm(gv_viol ~ crit, data=d, family = "binomial")
 m1 <- glm(gv_viol ~ crit, data=d[d$senat==1,], family = "binomial")
 m2 <- glm(gv_viol ~ crit, data=d[d$senat==2,], family = "binomial")
 stargazer(m, m1, m2, 
-          type = "txt"
+          type = "text"
           , digits = 1
           , dep.var.caption = "RoP deviation"
           , dep.var.labels.include = F

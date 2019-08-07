@@ -87,7 +87,7 @@ for(i in 2:length(ersatz)){
   else replace[[i]] <- NA
 }
 
-## indicate drop=T bei leeren zeilen, nach herauslöschen der dopplungen
+## indicate drop=T bei leeren zeilen, nach herauslöschen der doppelungen
 
 # modification an kopien von ersatz und ersetzt
 ersatz_mod <- ersatz
