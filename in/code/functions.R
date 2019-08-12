@@ -29,6 +29,7 @@ richter.split <- function(x){
 jahr.to.date <- function(x){
   x <- str_replace(x, "(^[0-9]{4}$)", "01/01/\\1")
   x <- str_replace(x, "ab ", "")
+  x <- str_replace(x, "Ab ", "")
   x <- str_replace(x, " ", "")
   x <- as.Date(x, "%d/%m/%Y")
 }

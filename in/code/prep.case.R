@@ -9,8 +9,10 @@ source("in/code/functions.R") # helper functions
 # I. Check data
 ###############
 
-case <- read.table("in/data-input/judicialData_Sep16.txt", sep="\t", encoding = "UTF-8")
-names(case) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richter_raw", "richter_txt", "richter_cit", "Anordnung", "link")
+
+
+#case <- read.table("in/data-input/judicialData_Sep16.txt", sep="\t", encoding = "UTF-8")
+#names(case) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richter_raw", "richter_txt", "richter_cit", "Anordnung", "link")
 
 
 # NAMES AND NO OF JUDGES

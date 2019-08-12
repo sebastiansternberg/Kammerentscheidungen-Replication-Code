@@ -35,6 +35,7 @@ rf <- lapply(str_split(formal$reihenfolge, ""), as.numeric)
 
 ### eintragen der ersetzer nach gv aus anderen Kammern
 gv <- list()
+
 for (i in 1:nrow(formal)){
   # get set of replacing kammern
   set <- formal[formal$start==formal$start[i] & formal$senat==formal$senat[i] &  formal$kammer!=formal$kammer[i],]
@@ -58,9 +59,20 @@ for (i in 1:nrow(formal)){
     if(formal$kammer[i]==3) gv[[i]] <- c(get.gv(4), get.gv(1), get.gv(2))
     if(formal$kammer[i]==4) gv[[i]] <- c(get.gv(1), get.gv(2), get.gv(3))
   }
+  
+  #special case for some years with 4 chambers in senate 1
+  if(formal$senat[i]==1 & (any(set$kammer==4)|formal$kammer[i]==4)){
+    if(formal$kammer[i]==1) gv[[i]] <- c(get.gv(2), get.gv(3))
+    if(formal$kammer[i]==2) gv[[i]] <- c(get.gv(3), get.gv(1))
+    if(formal$kammer[i]==3) gv[[i]] <- c(get.gv(1), get.gv(2))
+    if(formal$kammer[i]==4) gv[[i]] <- c(get.gv(1), get.gv(2), get.gv(3))
+  }
+  
+  
   # delete selfreplacers
   gv[[i]] <- setdiff(unlist(gv[[i]]), unlist(richter.split(formal$richter[i])))
 }
+
 formal$gv <- list.collapse(gv)
 
 # check: immer 5 mögliche Ersetzer (8 - 2 in the chamber - 1 dropping)
