@@ -254,9 +254,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -281,22 +279,92 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -311,13 +379,46 @@ $(document).ready(function () {
 
 <div id="chambergfcc" class="section level1">
 <h1>chamberGFCC</h1>
-<p>functions.R: - contains helpful functions to clean the names of the judges, convert dates, or collaps lists.</p>
+<p>This Github provides the files necessary to replicate the analysis for the paper <em>“Are Judges Political Animals After All? Quasi-experimental Evidence from the German Federal Constitutional Court”</em>.</p>
+<div id="code" class="section level2">
+<h2>Code</h2>
+<p>The file <em>maste.R</em> can be used to run all necessary steps for the replication in one file. The repository contains the following files.</p>
+<p>functions.R</p>
+<ul>
+<li>contains helpful functions to clean the names of the judges, convert dates, or collaps lists.</li>
+</ul>
+<p>prep.formal.R</p>
+<ul>
+<li>contains the code that is necessary to provide the basic data that is necessary to start the analysis, in particular which judge is supposed to being replaced by whom according to the RoP (Geschäftsverteilung).</li>
+</ul>
+<p>prep.case.R</p>
+<ul>
+<li>reads all the chamber decisions which were automatically scraped from the website of the GFCC and obtains the judges who actually signed the decisions; we also compare the data with respect to its consistency and merge the judges allocation for the replacement according to the RoP.</li>
+</ul>
+<p>code_vars.R</p>
+<ul>
+<li>creates the variables for the analysis. In particular, it compares the actually sitting judges with the judges that are supposed to sit there on a given day. It also automatically checks the party label of the judges, that is, whether a red judge is replaced by a red or “black” judges and vice versa.</li>
+</ul>
+</div>
+<div id="data-sets" class="section level2">
+<h2>Data Sets</h2>
 <p>DateInput contains:</p>
-<p>kammer-formal_utf.csv: - Data about the year of a chamber, the senat, the chamber number, the name of the judges in this chamber, and the order of replacement. The data set goes from 1998 to 2016.</p>
-<p>Reihenfolge 321 heißt das letztgenannter Richter zuerst drankommt, dann der mittlere und dann der erstgenannte.</p>
-<div id="liste_richter_1_utf.csv" class="section level2">
-<h2>Liste_Richter_1_utf.csv:</h2>
-<p>Replacement rules: First Senate:</p>
+<p>kammer-formal_utf.csv:</p>
+<ul>
+<li>Data about the year of a chamber, the Senate, the chamber number, the name of the judges in this chamber, and the order of replacement. The data set goes from 1998 to 2019. The order of 321 indicates which judges of the respective Chamber is the first, second or third to replace a dropping judge.</li>
+</ul>
+<p>Liste_Richter_1_utf.csv:</p>
+<ul>
+<li>contains a lot of information about the biographies of the judges at the GFCC. This data set contains also the information about the party that nominated the judge, which is necessary for our analyses.</li>
+</ul>
+<p>judicialData_Sep16.txt:</p>
+<ul>
+<li>contains all chamber decisions that are available on the webpage of the GFCC. You can find all code to replicate the webscraping in this <a href="https://github.com/sebastiansternberg/scraper-decisions-German-Federal-Constitutional-Court">Github Repository</a>.</li>
+</ul>
+</div>
+<div id="general-information" class="section level2">
+<h2>General information</h2>
+<p>The Geschäftsverteilung (RoP) is published on the website of the GFCC as well. In the RoP, the judges determine who is sitting in which chamber. They also write down who is replacing judges who drop out, e.g. because of illness. Typical replacement rules read as follows:</p>
 <p>Bei Verhinderung ordentlicher Kammermitglieder treten:</p>
 <ul>
 <li>für die Mitglieder der 1. Kammer die Mitglieder der 3. Kammer, sodann die Mitglieder der 2. Kammer,</li>
@@ -325,7 +426,8 @@ $(document).ready(function () {
 <li>für die Mitglieder der 3. Kammer die Mitglieder der 2. Kammer, sodann die Mitglieder der 1. Kammer,</li>
 </ul>
 <p>jeweils mit dem zuletzt genannten Mitglied beginnend, als Stellvertreter ein.</p>
-<p>Second Senate is about the seniority, beginning with the youngest: 2010 Senate 2 Chamber 3 did consist of: Voßkuhle, Mellinghoff, Lübbe-Wolf. Came to Court (04/2008, 01/2001, 03/2002). Therefore the replacement would be: 132, because Voßkuhle is the youngest.</p>
+<p>In the second senate, often the the seniority, beginning with the younges, is used. For instance:</p>
+<p>2010 Senate 2 Chamber 3 did consist of: Voßkuhle, Mellinghoff, Lübbe-Wolf. Came to Court (04/2008, 01/2001, 03/2002). Therefore the replacement would be: 132, because Voßkuhle is the youngest.</p>
 </div>
 </div>
 

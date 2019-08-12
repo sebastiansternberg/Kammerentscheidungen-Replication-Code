@@ -10,9 +10,10 @@ source("in/code/functions.R") # helper functions
 ###############
 
 
+case <- load("chamber_decisions.Rda")
 
-#case <- read.table("in/data-input/judicialData_Sep16.txt", sep="\t", encoding = "UTF-8")
-#names(case) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richter_raw", "richter_txt", "richter_cit", "Anordnung", "link")
+#case1 <- read.table("in/data-input/judicialData_Sep16.txt", sep="\t", encoding = "UTF-8")
+#names(case1) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richter_raw", "richter_txt", "richter_cit", "Anordnung", "link")
 
 
 # NAMES AND NO OF JUDGES
@@ -40,18 +41,18 @@ source("in/code/functions.R") # helper functions
  
 
 # DATE
-  case$date[case$date=="None"] <- NA # some missing in senate decisions
+ # case$date[case$date=="None"] <- NA # some missing in senate decisions
 
   #CHECK PASSED #case <- case[!is.na(case$date),]
   #if(any(is.na(case$date))==T) print("error: some dates missing")
   #case$date <- as.Date(case$date, "%d.%m.%Y")
   
-  case$date <- as.Date(case$date, "%d.%m.%Y")
+  #case$date <- as.Date(case$date, "%d.%m.%Y")
   
 # KAMMER NR
 
     case$kammer <- case$kammer_txt
-    case$kammer[is.na(case$kammer_txt)] <- case$kammer_cit[is.na(case$kammer_txt)]
+    case$kammer[is.na(case$kammer_txt)] <- case$kammer_cit[is.na(case$kammer_txt)] #if missing in kammer text (in the header of the decision), replace with kammer cit (from the citations)
     #table(case$kammer, nrichter, exclude=NULL)
     #case$link[is.na(case$kammer) & nrichter==3]
     
