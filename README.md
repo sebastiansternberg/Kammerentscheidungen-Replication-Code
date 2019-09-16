@@ -65,6 +65,57 @@ In the second senate, often the the seniority, beginning with the younges, is us
 2010 Senate 2 Chamber 3 did consist of: Voßkuhle, Mellinghoff, Lübbe-Wolf. Came to Court (04/2008, 01/2001, 03/2002). Therefore the replacement would be: 132, because Voßkuhle is the youngest.
 
 
+Final data set consists of:
+
+
+
+- r1, r2, r3: 
+The judges actual signing a decision.
+
+
+- r1_f, r2_f, r3_f
+The judges formally sitting in this panel
+
+- gv:
+ The order of the judges who are going to replace an absente judge. 
+
+- ersetzt:
+The name(s) of the judges who are absente.
+
+- ersatz:
+The name of the judges who are the replacement. 
+
+-konform:
+how the panel would look like if the replacement order is in according with the RoP
+
+- crit:
+critical case; this is, whether following the replacement order (RoP) would lead to a totally black or red chamber.
+
+- c_nachgversatz:
+kammerfarbe die mit ersatz nach gv entstehen würde
+
+- which_gov:
+At which position in the order of the replacement is the actual replacement? 1 3 for instance means the first and then the third judge of the RoP are selected 
+
+- real_c
+which of the judges in the real chamber are red?
+
+
+
+
+ToDO:
+
+- descriptives machen/rausschreiben: overall N, overall dropouts, conservative drop out
+- check presidents workload
+- check simulation distribution slightly skewed
+- read German paper again and update data set and graps.
+- Datensatz beschreiben
+- Master do anpassen
+- Was passiert wenn man sich die Fälle ohne Präsident anschaut
+- More stories in the data, e.g. informal replacements etc.
+- Github dafür machen und rdm updaten
+
+
 
 
 
