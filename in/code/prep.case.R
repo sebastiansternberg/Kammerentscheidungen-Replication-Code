@@ -1,5 +1,6 @@
 ###### prep case data set
 #######################
+
 source("in/code/functions.R") # helper functions
 
 # I. check data consistency
@@ -9,18 +10,31 @@ source("in/code/functions.R") # helper functions
 # I. Check data
 ###############
 
+case <- read.csv("in/data-input/chamber_decision_cleaned.csv", encoding = "UTF-8")
 
-case <- load("chamber_decisions.Rda")
+#subset only cases for 1998 or later, because before there are barely any cases and we do not have the RoP for these years
+
+case$year <- year(case$date)
+case <- case[case$year > 1997, ]
+
 
 #case1 <- read.table("in/data-input/judicialData_Sep16.txt", sep="\t", encoding = "UTF-8")
 #names(case1) <- c("i", "az", "date", "senat", "kammer_cit", "kammer_txt", "richter_raw", "richter_txt", "richter_cit", "Anordnung", "link")
 
-
 # NAMES AND NO OF JUDGES
+
+#convert umlaute to ae 
+
+# case$richter_txt <- stri_replace_all_fixed(
+#   case$richter_txt, 
+#   c("ä", "ö", "ü", "Ä", "Ö", "Ü"), 
+#   c("ae", "oe", "ue", "Ae", "Oe", "Ue"), 
+#   vectorize_all = FALSE
+# )
 
   # consolidate richter (from cite)
   richter <- clean.names(case$richter_txt)
-  richter[richter=="No names in the text"] <- clean.names(case$richter_cit)[richter=="No names in the text"]
+  #richter[richter=="No names in the text"] <- clean.names(case$richter_cit)[richter=="No names in the text"]
   richter[richter=="None"] <- NA
   
   # no of richter
@@ -51,8 +65,8 @@ case <- load("chamber_decisions.Rda")
   
 # KAMMER NR
 
-    case$kammer <- case$kammer_txt
-    case$kammer[is.na(case$kammer_txt)] <- case$kammer_cit[is.na(case$kammer_txt)] #if missing in kammer text (in the header of the decision), replace with kammer cit (from the citations)
+    case$kammer <- case$kammer_txt #here are always the correct ones in 
+    #case$kammer[is.na(case$kammer_txt)] <- case$kammer_cit[is.na(case$kammer_txt)] #if missing in kammer text (in the header of the decision), replace with kammer cit (from the citations)
     #table(case$kammer, nrichter, exclude=NULL)
     #case$link[is.na(case$kammer) & nrichter==3]
     
@@ -97,6 +111,10 @@ print(if(nrow(missing)==0)  "all cases matched" else str_c("case2formal: ", nrow
 
 # order innerhalb der kammern chronologisch [vorgängerzeile die zeitlich letzte entsch in der kammers]
 out <- out[order(out$senat, out$kammer, out$date),]
+
+#get rid of rownames:
+rownames(out) <- c()
+
 
 # rr: richter real, rf: richter formal
 rr <- apply(out[, str_detect(names(out), "r[1-3]$")], 2, function(x) str_trim(x))

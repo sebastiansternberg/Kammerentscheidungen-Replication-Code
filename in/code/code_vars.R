@@ -27,8 +27,12 @@ for (i in 1:length(real)){
     rest_c[[i]] <- is.red(rest[[i]]) #is one of the remaining a red judge?
 }
 
+# out$absent_judge <- ersetzt
+# out$replacing_judge <- ersatz
+out$wechsel_at_all <- unlist(wechsel)
 
 ############# daybyday abwesenheitsliste
+out$date <- as.Date(out$date)
 
 # richter zählt so lang als nicht verfügbar bis er wieder nachweislich da ist
 alldays <- seq(min(out$date), max(out$date), by=1)
@@ -107,7 +111,8 @@ for(i in 1:length(drop)){
 }
 
 # checking
-check <- cbind(list.collapse(ersetzt), list.collapse(ersatz), list.collapse(ersetzt_mod), list.collapse(ersatz_mod), unlist(drop), unlist(drop_mod), list.collapse(replace))
+check <- cbind(list.collapse(ersetzt), list.collapse(ersatz), list.collapse(ersetzt_mod), 
+               list.collapse(ersatz_mod), unlist(drop), unlist(drop_mod), list.collapse(replace))
 
 #################### dv und critical cases
 #################################################
@@ -157,6 +162,8 @@ full1 <- full[full$senat==1,]
 full2 <- full[full$senat==2,]
 write.csv(full, "in/prepareddata/full_dataset.csv")
 d <- full[full$drop==F, ]
+d <- na.omit(d) #drop cases where more then three judges are replaced
+
 write.csv(d, "in/prepareddata/final_dataset.csv")
 
-save.image("in/prepareddata/dataset.Rdata")
+#save.image("in/prepareddata/dataset.Rdata")

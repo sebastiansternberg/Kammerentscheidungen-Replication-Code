@@ -1,5 +1,5 @@
 
-load("in/prepareddata/dataset.Rdata")
+#load("in/prepareddata/dataset.Rdata")
 options(stringsAsFactors = F)
 
 ##### 1. check data
@@ -69,7 +69,7 @@ sim <- function(nsim, model, ci=F){
 out <- rbind(data.frame(senate=rep(0, nsim), diff=sim(nsim, m)),
              data.frame(senate=rep(1, nsim), diff=sim(nsim, m1)),
              data.frame(senate=rep(2, nsim), diff=sim(nsim, m2)))
-out$senate <- factor(out$senate, labels=c("Senate 1", "Senate 2"))
+out$senate <- factor(out$senate, labels=c("Both", "Senate 1", "Senate 2"))
 
 
 ####### errorbar
@@ -85,7 +85,7 @@ bar$fett <- c(1, 0, 0)
 ate_bar <-
   ggplot(bar, aes(x=ate, y=senate)) +
   geom_point(size=.5+bar$fett) + geom_errorbarh(aes(xmax=ciu, xmin=cil), height = .1, size=.5+bar$fett) + geom_vline(xintercept = 0) +
-  scale_y_continuous(breaks=c(2, 1.5, 1.3), limits=c(1,2.5), labels=c("Main Effect", "Senate 2", "Senate 1")) + ylab("") +
+  scale_y_continuous(breaks=c(2, 1.5, 1.3), limits=c(1,2.5), labels=c("Main Effect", "Senate 1", "Senate 2")) + ylab("") +
   scale_x_continuous(limits=c(-1,1)) + xlab("ATE\nDifference in RoP deviation probability (critical - non-critical cases)") +
   theme_bw() + guides(col=FALSE)
 

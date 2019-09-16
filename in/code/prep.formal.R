@@ -2,7 +2,19 @@
 ####################
 source("in/code/functions.R") # helper functions
 
-formal <- read.csv("in/data-input/kammer-formal_utf.csv", sep=";", encoding = "UTF-8")
+#formal <- read.csv("in/data-input/kammer-formal_utf.csv", sep=";", encoding = "UTF-8")
+
+formal <- read.csv("in/data-input/kammer-formal_utf8.csv", sep=",", encoding = "UTF-8")
+
+#if windows pc run this (because of German Umlaute Problem):
+
+# formal$richter <- stri_replace_all_fixed(
+#   formal$richter, 
+#   c("ä", "ö", "ü", "Ä", "Ö", "Ü"), 
+#   c("ae", "oe", "ue", "Ae", "Oe", "Ue"), 
+#   vectorize_all = FALSE
+# )
+
 
 # gen start of judge terms
 formal$start <- jahr.to.date(formal$jahr) #code start year of the term
@@ -89,7 +101,17 @@ allr <- sort(unique(unlist(richter.split(formal$richter))))
 #########################################
 col <- read.csv("in/data-input/Liste_Richter_1_utf.csv", sep="^", encoding = "UTF-8")
 
+
+# col$last_name_r <- stri_replace_all_fixed(
+#   col$last_name_r, 
+#   c("ä", "ö", "ü", "Ä", "Ö", "Ü"), 
+#   c("ae", "oe", "ue", "Ae", "Oe", "Ue"), 
+#   vectorize_all = FALSE
+# )
+
+
 # clean names
+
 col$last_name_r <- str_trim(clean.names(col$last_name_r))
 col$last_name_r <- str_trim(str_replace_all(col$last_name_r, "\\(|\\)| ", ""))
 col$first_name_r <- str_trim(col$first_name_r)
@@ -110,6 +132,7 @@ print(str_c("MISSING JUDGE COLOR: ", allr[!allr%in%col$last_name_r]))
 print(str_c("nr of list1-judges have NA color: ", table(!is.na(col$red), exclude = NULL)[2]))
 
 redr <- col$last_name_r[col$red==1]
+
 
 # clean
 rm(list=setdiff(ls(), c("allr", "redr", "formal", "col")))

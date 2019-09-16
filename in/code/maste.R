@@ -1,4 +1,5 @@
-packages <- c("foreign", "stringr", "ggplot2", "knitr", "stargazer", "ggplot2", "xtable", "Hmisc", "tables")
+packages <- c("foreign", "stringr", "ggplot2", "knitr", "stargazer", "ggplot2", "xtable", "lubridate",
+              "Hmisc", "tables", "stringi", "strex")
 for (p in packages) {
   if (p %in% installed.packages()[,1]) require(p, character.only=T)
   else {
@@ -21,5 +22,6 @@ source("in/code/prep.case.R")
 # code variables 
 source("in/code/code_vars.R")
 
+# The analyses is in a separate file not linked here.
 
 

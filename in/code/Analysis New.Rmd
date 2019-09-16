@@ -1,0 +1,385 @@
+---
+title: "Analysis New"
+author: "Sebastian Sternberg"
+date: "16 9 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list = ls())
+
+require(magrittr)
+require(dplyr)
+require(ggplot2)
+require(lubridate)
+require(stringi)
+require(stringr)
+require(strex) #regex etc.
+require(ggthemes)
+
+```
+
+
+Read both data sets:
+
+```{r}
+d <- read.csv("in/prepareddata/final_dataset.csv")
+full <- read.csv("in/prepareddata/full_dataset.csv")
+
+#Because the court might have not uploaded all cases so far, we just look at the end of 2018 (31.12.2018)
+
+d <- d %>% filter(year < 2019) # (just one case dropping out)
+
+```
+
+## EDA
+
+How many drops overall:
+
+```{r}
+
+bla <- d%>% 
+  group_by(year)%>%
+  summarise(freq=n())
+
+#plot
+
+ggplot(bla, aes(year, freq)) + 
+  geom_bar(stat="identity") + theme_tufte()
+
+
+```
+
+Other descriptives:
+
+
+```{r}
+df <- full
+
+df$year <- year(df$date)
+df$month <- month(df$date) %>% as.factor()
+df$weekday <- wday(df$date, label = T)
+
+```
+
+
+```{r}
+
+#year by Senate chamber
+
+
+count_pct <- function(df) {
+  return(
+    df %>%
+      tally %>% 
+      mutate(n_pct = 100*n/sum(n))
+  )
+}
+
+df$kammer <- as.factor(df$kammer)
+df_senat1 <- df %>% filter(senat == 1) %>% group_by(year, kammer) %>% count_pct()
+df_senat2 <- df %>% filter(senat == 2) %>% group_by(year, kammer) %>% count_pct()
+
+
+# outfolder <- "C:/Users/ssternbe/Dropbox/Kaggle/Scraper_GFCC_Decisions/scraper-decisions-German-Federal-Constitutional-Court/out/figures/"
+# 
+# pdf(paste0(outfolder, "/","perc_Senate1byChamber.pdf"))
+
+
+
+ggplot(df_senat1, aes(x = year, y=n_pct, fill=kammer)) + 
+    geom_bar(position="fill", stat="identity") + labs(title = "Senate 1", fill="Chamber") + 
+  theme_tufte()
+
+
+ggplot(df_senat2, aes(x = year, y=n_pct, fill=kammer)) + 
+    geom_bar(position="fill", stat="identity") + labs(title = "Senate 2", fill = "Chamber")+
+  theme_tufte()
+
+```
+
+by weekday
+```{r}
+
+ggplot(tally(group_by(df, weekday)),
+    aes(x = weekday, y = n)) +
+    geom_bar(stat="identity") + theme_tufte()
+
+
+ggplot(tally(group_by(df, senat, weekday)),
+    aes(x = weekday, y = n, fill = senat)) +
+    geom_bar(stat="identity") + labs(fill="Senate")
+
+
+
+```
+
+per Month:
+
+```{r}
+
+ggplot(tally(group_by(df, month)),
+    aes(x = month, y = n)) +
+    geom_bar(stat="identity") + theme_tufte()
+
+```
+
+
+
+# Main Analyses
+
+
+```{r}
+# RoP violation rate is larger in critical cases.
+
+summary(m <- glm(gv_viol ~ crit, data=d, family = "binomial"))
+summary(m1 <- glm(gv_viol ~ crit, data=d[d$senat==1,], family = "binomial"))
+summary(m2 <- glm(gv_viol ~ crit, data=d[d$senat==2,], family = "binomial"))
+
+stargazer(m, m1, m2, 
+          type = "text"
+          , digits = 1
+          , dep.var.caption = "RoP deviation"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = "Critical case"
+          #, star.cutoffs = 0.1
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          #, notes = "$*: p < 0.05$"
+          , notes.align = "r"
+          , notes.append = FALSE
+         # , out = "out/regtable.tex"
+          )
+
+
+```
+
+
+Signs point in the predicted direction (violation is more likely in critical cases).
+
+Difference in violation rate between critical and non-critical cases is not statistically significant in Senate 2.
+
+Set up simulation to test whether RoP violation rate is larger in critical cases based on the previous models:
+
+```{r}
+require(MASS)
+nsim <- 1000
+
+sim <- function(nsim, model, ci=F){
+  S <- MASS::mvrnorm(nsim, coef(model), vcov(model))
+  logit <- function(x) exp(x)/(1+exp(x))
+  s.x <- logit(S%*%c(1,0)); s.x1 <- logit(S%*%c(1,1)) #diff between no critical and critical
+  out <- as.numeric(s.x1-s.x) #First Difference = ATE
+  if(ci==T) out <- out[out >= quantile(out, .025) & out <= quantile(out, .975)]
+  return(out)
+}
+
+#sim both:
+
+sim_both <- sim(nsim, m)
+sim_1 <- sim(nsim, m1)
+sim_2 <- sim(nsim, m2)
+
+sim_data <- cbind.data.frame(sim_both, sim_1, sim_2)
+
+```
+
+Make the corresponding coefficient plot:
+
+
+```{r}
+# Extract coefficient estimates
+
+coef_vec <- apply(sim_data, 2, mean)
+  
+quantiles_95 <- apply(sim_data, 2, quantile,probs = c(0.025, 0.975))
+quantiles_90 <- apply(sim_data, 2, quantile,probs = c(0.05, 0.95))
+
+names_vec <- c("Both Senates", 
+                   "Senate 1", 
+                   "Senate 2") 
+
+outfolder <- ("~/Dropbox/Papers Mannheim/Paper 2 Kammerbesetzung/Causal Inference Paper/chamber_paper_august2019/chamberGFCC/out")
+
+pdf(paste(outfolder,"/ate_errorbar.pdf",sep = ""), width = 8, height = 6)
+
+#adjust margins:
+par(mar  = c(4,7,2,2))
+
+plot(coef_vec, 3:1, 
+     pch=19, 
+     cex=.8, 
+     axes=F, 
+     ylab="", 
+     xlab="ATE\nDifference in RoP deviation probability (non-critical - critical cases)", 
+     xlim=c(-0.5, 0.7))
+axis(1)
+axis(2, at=3:1, label=names_vec, col="white", las = 1)
+abline(v=0, lty=2) # add zero reference line
+
+#plot 95% CIs
+segments(quantiles_95[1, ],  3:1, quantiles_95[2, ], length(coef_vec):1, lwd = 1) # add confidence intervals
+
+#add 90% CIs
+segments(quantiles_90[1, ],  3:1, quantiles_90[2, ], length(coef_vec):1, lwd = 3) # add confidence intervals
+
+dev.off()
+
+```
+
+
+When only looking at decisions which are **not** Einstweilige Anordnung (BvQs):
+
+
+```{r}
+
+summary(m_nobvq <- glm(gv_viol ~ crit, data=d[d$anordnung == 0, ], family = "binomial"))
+summary(m1_nobvq <- glm(gv_viol ~ crit, data=d[d$senat==1 & d$anordnung == 0, ], family = "binomial"))
+summary(m2_nobvq <- glm(gv_viol ~ crit, data=d[d$senat==2 & d$anordnung == 0, ], family = "binomial"))
+
+```
+
+Simulate and make coef plot:
+
+```{r}
+
+sim_both <- sim(nsim, m_nobvq )
+sim_1 <- sim(nsim, m1_nobvq)
+sim_2 <- sim(nsim, m2_nobvq)
+
+sim_data <- cbind.data.frame(sim_both, sim_1, sim_2)
+
+coef_vec <- apply(sim_data, 2, mean)
+  
+quantiles_95 <- apply(sim_data, 2, quantile,probs = c(0.025, 0.975))
+quantiles_90 <- apply(sim_data, 2, quantile,probs = c(0.05, 0.95))
+
+names_vec <- c("Both Senates", 
+                   "Senate 1", 
+                   "Senate 2") 
+
+outfolder <- ("~/Dropbox/Papers Mannheim/Paper 2 Kammerbesetzung/Causal Inference Paper/chamber_paper_august2019/chamberGFCC/out")
+
+pdf(paste(outfolder,"/ate_errorbar_noBvQ.pdf",sep = ""), width = 8, height = 6)
+
+#adjust margins:
+par(mar  = c(4,7,2,2))
+
+plot(coef_vec, 3:1, 
+     pch=19, 
+     cex=.8, 
+     axes=F, 
+     ylab="", 
+     xlab="ATE (without BvQ)\nDifference in RoP deviation probability (non-critical - critical cases)", 
+     xlim=c(-0.5, 0.7))
+axis(1)
+axis(2, at=3:1, label=names_vec, col="white", las = 1)
+abline(v=0, lty=2) # add zero reference line
+
+#plot 95% CIs
+segments(quantiles_95[1, ],  3:1, quantiles_95[2, ], length(coef_vec):1, lwd = 1) # add confidence intervals
+
+#add 90% CIs
+segments(quantiles_90[1, ],  3:1, quantiles_90[2, ], length(coef_vec):1, lwd = 3) # add confidence intervals
+
+dev.off()
+
+```
+
+
+If it is really that in BvQ cases the logic should not apply (because these are the cases where time is really an issue), then the OI is that the party label heuristic should not work here:
+
+
+```{r}
+
+
+summary(m_bvq <- glm(gv_viol ~ crit, data=d[d$anordnung == 1, ], family = "binomial"))
+summary(m1_bvq <- glm(gv_viol ~ crit, data=d[d$senat==1 & d$anordnung == 1, ], family = "binomial"))
+summary(m2_bvq <- glm(gv_viol ~ crit, data=d[d$senat==2 & d$anordnung == 1, ], family = "binomial"))
+
+```
+
+None of the models is sign. This means that in BvQ cases, judges do not have the time/mind to take the party labels into account. 
+
+
+## Check Presidents in Chambers (proxy for workload)
+
+
+```{r}
+
+name_presidents <- c("Voßkuhle", "Papier", "Limbach", "Harbarth", "Kirchhof", "Hassemer", "Seidl")
+
+d$is_presidentinchamber <- ifelse(d$r1_f %in% name_presidents | 
+                                  d$r2_f %in% name_presidents|
+                                  d$r3_f %in% name_presidents,
+                                1, 0)
+
+#conmtrol for it
+summary(m <- glm(gv_viol ~ crit+ is_presidentinchamber, data=d, family = "binomial"))
+summary(m1 <- glm(gv_viol ~ crit + is_presidentinchamber, data=d[d$senat==1,], family = "binomial"))
+summary(m2 <- glm(gv_viol ~ crit + is_presidentinchamber, data=d[d$senat==2,], family = "binomial"))
+
+```
+
+# Check homogenous chambers per RoP
+
+```{r}
+
+col <- read.csv("~/Dropbox/Papers Mannheim/Paper 2 Kammerbesetzung/Causal Inference Paper/chamber_paper_august2019/chamberGFCC/in/data-input/Liste_Richter_1_utf.csv", sep="^", encoding = "UTF-8")
+
+col$last_name_r <- str_trim(clean.names(col$last_name_r))
+col$last_name_r <- str_trim(str_replace_all(col$last_name_r, "\\(|\\)| ", ""))
+col$first_name_r <- str_trim(col$first_name_r)
+
+col$party_nom <- factor(col$ticket_r)
+levels(col$party_nom) <- c("parteilos", "SPD", "CDU", "FDP", "Grüne", "CSU")
+
+# code binary color
+col$red <- NA
+col$red[col$party_nom%in%c("CDU", "FDP", "CSU")] <- 0
+col$red[col$party_nom%in%c("SPD", "Grüne")] <- 1
+col <- col[!is.na(col$red), c("last_name_r", "first_name_r", "party_nom", "red")]
+
+# remove duplicate and irrelevant richter
+col <- unique(col)
+col <- col[col$last_name_r%in%allr,] # irrelevant previous judges
+print(str_c("MISSING JUDGE COLOR: ", allr[!allr%in%col$last_name_r]))
+print(str_c("nr of list1-judges have NA color: ", table(!is.na(col$red), exclude = NULL)[2]))
+
+redr <- col$last_name_r[col$red==1]
+
+#code the color of the judges:
+
+is_r1f_red <- ifelse(full$r1_f %in% redr, 1, 0)
+is_r2f_red <- ifelse(full$r2_f %in% redr, 1, 0)
+is_r3f_red <- ifelse(full$r3_f %in% redr, 1, 0)
+
+
+check_data <- cbind.data.frame(is_r1f_red, is_r2f_red, is_r3f_red)
+
+check_data$rowsum <- rowSums(check_data)
+
+table(check_data$rowsum)
+
+#There is never a homogenous red chamber, but there are black ones
+# If sum is zero then black because then no judge in the chamber would be red == all are black
+
+#There are some black chambers:
+
+full$black_chamber <- ifelse(check_data$rowsum == 0, 1, 0)
+
+
+check_black_chamber <- full %>% filter(black_chamber == 1)
+
+```
+
+There is one black chamber: Broß Di Fabio Landau (2008-2010). 
+
+
+
