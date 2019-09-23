@@ -213,3 +213,47 @@ table(rowSums(check_data))
 check_data$rowsum <- rowSums(check_data)
 
 out$complete_black <- ifelse(check_data$rowsum == 0, 1, 0)
+
+
+####einstweilige Anordnung
+
+#USE THE OLD DATA SET:
+load("archive/in/prepareddata/dataset.Rdata")
+options(stringsAsFactors = F)
+
+require(stringi)
+require(stringr)
+
+table(d$Anordnung)
+
+
+
+tofind <- paste(c("\\dbvr\\d+","\\dbvq\\d+","\\dbvl\\d+"), collapse="|")
+
+d$new_az <- str_extract_all(d$link, tofind) %>% unlist()
+
+sum(is.na(d$new_az))
+
+
+d$anordnung_az <- ifelse(grepl("\\dbvq", d$new_az), 1, 0)
+
+
+str_extract_all("\\dbvq\\d+", d$new_az)
+
+
+table(d$Anordnung, d$anordnung_az)
+
+#how many az of old data set are wrong 
+
+
+d_to_inspect <- d[d$Anordnung == 1 & d$anordnung_az == 0, ]
+
+
+d$anordnung_correct <- ifelse(d$anordnung_az == 1 | d$Anordnung == 1, 1, 0)
+
+
+table(d$anordnung_correct)
+
+
+
+

@@ -114,6 +114,7 @@ ToDO:
 - Was passiert wenn man sich die Fälle ohne Präsident anschaut
 - More stories in the data, e.g. informal replacements etc.
 - Github dafür machen und rdm updaten
+- check some of the after 2016 cases whether they are correct deviations or not. 
 
 
 
