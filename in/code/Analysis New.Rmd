@@ -21,9 +21,10 @@ require(stringr)
 require(strex) #regex etc.
 require(stargazer)
 require(ggthemes)
-
+require(xtable)
 
 source("in/code/functions.R") #help functions
+
 
 ```
 
@@ -74,8 +75,27 @@ nrow(full[full$year < 2019, ])
 
 #Distribution of critical cases:
 
-table(d$critical)
+table(d$crit)
 table(d$gv_viol)
+
+
+##make table for the paper
+## crosstabs
+make.table <- function(d, path){
+  t <- table(d$gv_viol, d$crit)
+  t <- rbind(as.character(t[1,]),
+        str_c("(", round(prop.table(t, 2)[1,],2)*100, "%)"),
+        as.character(t[2,]),
+        str_c("(", round(prop.table(t, 2)[2,],2)*100, "%)"))
+  t <- cbind(c("no RoP deviation", "", "RoP deviation", ""), t)
+  colnames(t) <- c("", "non-critical episode", "critical episode")
+  t <- xtable(t); align(t) <- "ll|cc"
+  print(t, include.rownames=F, file=path)
+}
+
+make.table(d[d$senat==1,], "out/dtab1.tex")
+make.table(d[d$senat==2,], "out/dtab2.tex")
+
 
 
 ```
@@ -201,7 +221,7 @@ stargazer(m, m1, m2,
           , dep.var.caption = "RoP deviation"
           , dep.var.labels.include = F
           , column.labels = c("Both Senates", "Senate 1", "Senate 2")
-          , covariate.labels = "Critical case"
+          , covariate.labels = "Critical Episode (=1)"
           #, star.cutoffs = 0.1
           , summary.stat = "n"
           , omit.stat = c("ll", "aic")
@@ -271,7 +291,7 @@ plot(coef_vec, 3:1,
      cex=.8, 
      axes=F, 
      ylab="", 
-     xlab="ATE\nDifference in RoP deviation probability (non-critical - critical cases)", 
+     xlab="ATE\nDifference in RoP deviation probability (non-critical - critical episodes)", 
      xlim=c(-0.5, 0.7))
 axis(1)
 axis(2, at=3:1, label=names_vec, col="white", las = 1)
@@ -331,7 +351,7 @@ plot(coef_vec, 3:1,
      cex=.8, 
      axes=F, 
      ylab="", 
-     xlab="ATE (without BvQ)\nDifference in RoP deviation probability (non-critical - critical cases)", 
+     xlab="ATE (without BvQ)\nDifference in RoP deviation probability (non-critical - critical episodes)", 
      xlim=c(-0.5, 0.7))
 axis(1)
 axis(2, at=3:1, label=names_vec, col="white", las = 1)
@@ -345,6 +365,30 @@ segments(quantiles_90[1, ],  3:1, quantiles_90[2, ], length(coef_vec):1, lwd = 3
 
 dev.off()
 
+
+###regression table:
+
+stargazer(m_nobvq, m1_nobvq, m2_nobvq, 
+          #type = "text"
+          type = "latex"
+          , digits = 1
+          , dep.var.caption = "RoP deviation"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = "Critical Episode (=1)"
+          #, star.cutoffs = 0.1
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          #, notes = "$*: p < 0.05$"
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/no_bvq.tex"
+          )
+
+
+
+
 ```
 
 
@@ -356,6 +400,35 @@ If it is really that in BvQ cases the logic should not apply (because these are 
 summary(m_bvq <- glm(gv_viol ~ crit, data=d[d$anordnung == 1, ], family = "binomial"))
 summary(m1_bvq <- glm(gv_viol ~ crit, data=d[d$senat==1 & d$anordnung == 1, ], family = "binomial"))
 summary(m2_bvq <- glm(gv_viol ~ crit, data=d[d$senat==2 & d$anordnung == 1, ], family = "binomial"))
+
+#First Senate
+table(d$crit[d$senat==1 & d$anordnung == 1], d$gv_viol[d$senat==1 & d$anordnung == 1])
+
+#Second Senate
+table(d$crit[d$senat==2 & d$anordnung == 1], d$gv_viol[d$senat==2 & d$anordnung == 1])
+
+
+stargazer(m_bvq, m1_bvq, m2_bvq, 
+          #type = "text"
+          type = "latex"
+          , digits = 1
+          , dep.var.caption = "RoP deviation"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = "Critical Episode (=1)"
+          #, star.cutoffs = 0.1
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          #, notes = "$*: p < 0.05$"
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/bvq.tex"
+          )
+
+
+
+
 
 ```
 
@@ -499,7 +572,7 @@ table(df_critical_deviation_notredorblack$real_c[df_critical_deviation_notredorb
 
 ```
 
-Gibt es unterschiedlich viele 2L 1R Kammern bzw 2R 1L Kammern in kritischen wie unkritischen Faellen
+## Gibt es unterschiedlich viele 2L 1R Kammern bzw 2R 1L Kammern in kritischen wie unkritischen Faellen
 
 real_c == 1 = 2R 1 L 
 real_c == 2 = 1 R 2L
@@ -513,7 +586,7 @@ prop.table(table(d$real_c[d$crit == 1]))
 
 ```
 
-Check whether dummy fuerFreitag und Wochenende tatsaechlich vorhersagen, dass es ein critischer oder nichtkritischer case ist:
+Check whether dummy fuer Freitag und Wochenende tatsaechlich vorhersagen, dass es ein critischer oder nichtkritischer case ist:
 
 ```{r}
 
@@ -526,9 +599,34 @@ d %>% filter(crit == 1 & friday_weekend == 0) %>% nrow()
 
 
 summary(m_friday <- glm(crit~friday_weekend, d, family = "binomial"))
+summary(m1_friday <- glm(crit~friday_weekend, d[d$senat == 1, ], family = "binomial"))
+summary(m2_friday <- glm(crit~friday_weekend, d[d$senat == 2, ], family = "binomial"))
+
 
 #check the same for BvQ
 summary(m_anordnung <- glm(crit~friday_weekend, d[d$anordnung == 0, ], family = "binomial"))
+
+### make regression table
+stargazer(m_friday, m1_friday, m2_friday, 
+          #type = "text"
+          type = "latex"
+          ,title = "Balance check weekend"
+          , digits = 1
+          , dep.var.caption = "Critical Episode"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+         # , covariate.labels = c("February", "March", "April", "May", "June", "July", "August", "September",
+         #                        "October", "November", "December")
+          #, star.cutoffs = 0.1
+         ,covariate.labels = "Friday/Weekend (=1)"
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          #, notes = "$*: p < 0.05$"
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/weekend.tex"
+          )
 
 
 ```
@@ -545,10 +643,34 @@ summary(m_month_s1 <- glm(crit ~ month, d[d$senat == 1, ], family = "binomial"))
 summary(m_month_s2 <- glm(crit ~ month, d[d$senat == 2, ], family = "binomial"))
 
 
+stargazer(m_month,m_month_s1, m_month_s2)
+
+
+stargazer(m_month, m_month_s1, m_month_s2, 
+          #type = "text"
+          type = "latex"
+          ,title = "Balance check month"
+          , digits = 1
+          , dep.var.caption = "Critical Episode"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = c("February", "March", "April", "May", "June", "July", "August", "September",
+                                 "October", "November", "December")
+          #, star.cutoffs = 0.1
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          #, notes = "$*: p < 0.05$"
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/month.tex"
+          )
+
+
+
 ```
 
 None of the month variables is significant. This means that month does not explain critical cases. 
-
 
 
 Does age explain critical cases? For this, we estimate the age the of the absentee judge(s) at the point in time the decision is made. We use this then as the IV to predict critical cases. 
@@ -564,12 +686,53 @@ col$last_name_r <- str_trim(str_replace_all(col$last_name_r, "\\(|\\)| ", ""))
 col$first_name_r <- str_trim(col$first_name_r)
 
 
+#the year numbers only have two digits: 1964 is only 64. We need to take care of this:
 
-col$
+col$birth_year <- str_c(19,substr(col$date_birth_r, 7,8))
+col$birth_day <- substr(col$date_birth_r, 1,2)
+col$birth_month <- substr(col$date_birth_r, 4,5)
+
+#create date
+col$justices_birthdate <- make_date(col$birth_year, col$birth_month, col$birth_day)
+
+#subset only the judges which are in the data set:
+list_all_names <- c("Baer", "Britz", "Broß", "Bryde",
+                    "Eichberger", "Gerhardt", "Christ", "DiFabio", "Gaier", "Graßhof",
+                    "Grimm", "Haas","Hermanns", "Harbarth", "Hassemer", "Hoffmann-Riem", "Hohmann-Dennhardt",
+                    "Hömig", "Huber", "Jaeger", "Jentsch", "Kessal-Wulf", "Kirchhof", "König", "Kruis",
+                    "Kühling", "Landau", "Langenfeld", "Limbach", "Lübbe-Wolff", "Maidowski", "Masing",
+                    "Mellinghoff", "Müller", "Osterloh", "Ott", "Papier", "Paulus", "Radtke", "Schluckebier",
+                    "Seidl", "Sommer", "Steiner", "Voßkuhle", "Winter")
 
 
-col$date_birth_r2 <- gsub("\\.", "/", col$date_birth_r)
-col$date_birth_r2 <- as.Date(col$date_birth_r2, format = "Y")
+col <- col[col$last_name_r %in% list_all_names, ]
+
+#drop Paul kirchhof and Müller Gebhard. But there are some decisions of Paul in 1998/1999, we take care of that later
+
+col <- col[!(col$last_name_r == "Müller" & col$first_name_r == "Gebhard"), ]
+col <- col[!(col$last_name_r == "Kirchhof" & col$first_name_r == "Paul"), ]
+
+
+col <- col %>% dplyr::select(last_name_r, first_name_r, justices_birthdate)
+
+#we have some missings where there are two judges. We have to split the names into ersatz1 and 2
+
+#get the first name of the ersetz judge:
+
+d$ersetz1 <- strsplit(d$ersetzt, " ") 
+
+
+#get the second name of the ersetz judge:
+
+
+
+
+d <- left_join(d, col, by = c("ersetzt" = "last_name_r"))
+
+#take care of the correct kirchof again:
+
+d$justices_birthdate[d$ersetzt == "Kirchhof" & d$senat == 2] <- "1943-02-21" #Paul Kirchhoff only in Senate 2
+
 
 
 ```
