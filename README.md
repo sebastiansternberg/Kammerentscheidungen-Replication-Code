@@ -1,7 +1,7 @@
 # chamberGFCC
 
 
-This Github provides the files necessary to replicate the analysis for the paper *"Are Judges Political Animals After All? Quasi-experimental Evidence from the German Federal Constitutional Court"*. 
+This Github provides the files necessary to replicate the analysis for the paper *"Are Judges Political Animals After All? Quasi-experimental Evidence from the German Federal Constitutional Court"*. In the folder in/prepareddata there is are also the final data sets so you do not have to run the code to create the data sets. **chamber_gfcc_analysisdata.dta** is a Stata data set which is ready to use to run the analyses without the pre-processing. 
 
 ## Code
 
@@ -49,7 +49,7 @@ chamber_decision_cleaned.csv:
 
 
 
-## General information
+## General information/ context on data
 
 The Geschäftsverteilung (RoP) is published on the website of the GFCC as well. In the RoP, the judges determine who is sitting in which chamber. They also write down who is replacing judges who drop out, e.g. because of illness. Typical replacement rules read as follows:
 
@@ -98,11 +98,11 @@ how the panel would look like if the replacement order is in according with the 
 critical episode; this is, whether following the replacement order (RoP) would lead to a totally black or red chamber (a homogenous panel only consisting of justices with the same party label, e.h. three left or three right justices)
 
 - c_nachgversatz:
-panel composition if the RoP was followed. 
+panel composition if the RoP was followed. how many of the judges in the real/observed panel are red? zero means all justices are right, 1 means LRR, 2 means LLR, 3 means LLL. 
 
 
 - which_gov:
-At which position in the order of the replacement is the actual replacement? 1 3 for instance means the first and then the third judge of the substitution order in accordance with the RoP are selected 
+At which position in the order of the replacement is the actual replacement? 1 3 for instance means the first and then the third judge of the substitution order are selected
 
 - real_c:
 how many of the judges in the real/observed panel are red? zero means all justices are right, 1 means LRR, 2 means LLR, 3 means LLL.

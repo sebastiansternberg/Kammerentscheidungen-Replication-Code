@@ -5,10 +5,6 @@ date: "16 9 2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r}
 rm(list = ls())
 
@@ -23,13 +19,14 @@ require(stargazer)
 require(ggthemes)
 require(xtable)
 
+#add the correct wd before
 source("in/code/functions.R") #help functions
 
 
 ```
 
 
-Read both data sets:
+Read both data sets. Add the correct wd before. d is the data set used for the analysis. full is the full data set just used for descriptives. 
 
 ```{r}
 
@@ -45,10 +42,10 @@ d <- d %>% filter(year < 2019) # (just one case dropping out)
 d$nersetzt <- as.numeric(sapply(d$ersetzt, function(x) length(unlist(richter.split(x)))))
 d <- d[d$nersetzt<3,] 
 
-
+#If a whole panel is replaced, we drop these observations.
 ```
 
-Check whether black chamber with Broß, DiFabio, Landau is always a non-critical case:
+Check whether a black chamber with Broß, DiFabio, Landau is always a non-critical case:
 
 ```{r}
 
@@ -59,7 +56,6 @@ d$crit[d$r1_f %in% black_chamber_judges & d$r2_f %in% black_chamber_judges & d$r
 #we need to drop these cases because they are by design always non-critical.
 
 d <- d[!(d$r1_f %in% black_chamber_judges & d$r2_f %in% black_chamber_judges & d$r3_f %in% black_chamber_judges), ]
-
 
 ```
 
@@ -101,9 +97,9 @@ make.table(d[d$senat==2,], "out/dtab2.tex")
 
 ```
 
-
-
 ## EDA
+
+Have a look at some descriptives. Most of them are not used in the paper. Just for visualization and data understanding. 
 
 How many drops overall:
 
@@ -122,7 +118,6 @@ ggplot(bla, aes(year, freq)) +
 ```
 
 Other descriptives:
-
 
 ```{r}
 df <- full
@@ -158,13 +153,6 @@ count_pct <- function(df) {
 df$kammer <- as.factor(df$kammer)
 df_senat1 <- df %>% filter(senat == 1) %>% group_by(year, kammer) %>% count_pct()
 df_senat2 <- df %>% filter(senat == 2) %>% group_by(year, kammer) %>% count_pct()
-
-
-# outfolder <- "C:/Users/ssternbe/Dropbox/Kaggle/Scraper_GFCC_Decisions/scraper-decisions-German-Federal-Constitutional-Court/out/figures/"
-# 
-# pdf(paste0(outfolder, "/","perc_Senate1byChamber.pdf"))
-
-
 
 ggplot(df_senat1, aes(x = year, y=n_pct, fill=kammer)) + 
     geom_bar(position="fill", stat="identity") + labs(title = "Senate 1", fill="Chamber") + 
@@ -207,6 +195,7 @@ ggplot(tally(group_by(df, month)),
 
 # Main Analyses
 
+This is the code for the main analysis. 
 
 ```{r}
 # RoP violation rate is larger in critical cases.
@@ -235,12 +224,9 @@ stargazer(m, m1, m2,
 
 ```
 
+Signs point in the predicted direction (violation is more likely in critical episodes). Difference in violation rate between critical and non-critical episodes is not statistically significant in Senate 2.
 
-Signs point in the predicted direction (violation is more likely in critical cases).
-
-Difference in violation rate between critical and non-critical cases is not statistically significant in Senate 2.
-
-Set up simulation to test whether RoP violation rate is larger in critical cases based on the previous models:
+Set up simulation to test whether RoP violation rate is larger in critical cases based on the previous models. This the the ATE then. 
 
 ```{r}
 require(MASS)
@@ -312,7 +298,7 @@ dev.off()
 
 ## When only looking at decisions which are **not** Einstweilige Anordnung (BvQs):
 
-We use the AZ (BvQ) as an approximation of a BvQ. Note that it can also be the case that BvRs are part of a Einstweilige Anordnung. 
+We use the AZ (BvQ) as an approximation of a BvQ. We expect party labels to play less a role in BvQ cases and more in non-BvQ cases.
 
 
 ```{r}
@@ -323,7 +309,7 @@ summary(m2_nobvq <- glm(gv_viol ~ crit, data=d[d$senat==2 & d$anordnung == 0, ],
 
 ```
 
-Simulate and make coef plot:
+Simulate and make coef plot as before:
 
 ```{r}
 
@@ -393,8 +379,7 @@ stargazer(m_nobvq, m1_nobvq, m2_nobvq,
 ```
 
 
-If it is really that in BvQ cases the logic should not apply (because these are the cases where time is really an issue), then the OI is that the party label heuristic should not work here:
-
+If it is really that in BvQ cases the logic should not apply (because these are the cases where time is really an issue), then the observable implication is that the party label heuristic should not work here:
 
 ```{r}
 
@@ -427,21 +412,14 @@ stargazer(m_bvq, m1_bvq, m2_bvq,
           , out = "out/bvq.tex"
           )
 
-
-
-
-
 ```
 
 None of the models is sign. This means that in BvQ cases, judges do not have the time/mind to take the party labels into account. 
 
-
 ## Check Presidents in Chambers (proxy for workload)
-
+Create a dummy for the chamber decisions where formally a president would be part in. 
 
 ```{r}
-
-#name_presidents <- c("Voßkuhle", "Papier", "Limbach", "Harbarth", "Kirchhof", "Hassemer", "Seidl")
 
 d$date <- as.Date(d$date)
 
@@ -476,10 +454,6 @@ stargazer(m_presi, m1_presi, m2_presi,
           , notes.append = FALSE
           , out = "out/presidentship.tex"
           )
-
-
-
-
 
 summary(m <- glm(gv_viol ~ crit+ is_presidentinchamber, data=d, family = "binomial"))
 summary(m1 <- glm(gv_viol ~ crit + is_presidentinchamber, data=d[d$senat==1,], family = "binomial"))
@@ -860,17 +834,8 @@ stargazer(m_age, m1_age, m2_age,
           )
 
 #Paulus in year 2010 is the reason:
-summary(m_age <- glm(crit ~ age_years_decision, d[d$year < 2010, ], family = "binomial"))
-summary(m_age <- glm(crit ~ age_years_decision, d[d$year < 2011, ], family = "binomial")) #Paulus 2010 matters
-
-
-
-d_sub2010 <-  d[d$year < 2010, ]
-
-summary(m_age <- glm(crit ~ age_years_decision, d_sub2010, family = "binomial"))
-
-d_2010 <- d[d$year == 2010, ]
-
+summary(glm(crit ~ age_years_decision, d[d$year < 2010, ], family = "binomial"))
+summary(glm(crit ~ age_years_decision, d[d$year < 2011, ], family = "binomial")) #Paulus 2010 matters
 
 summary(m_age_confonunder <- glm(gv_viol ~ crit + age_years_decision, d, family = "binomial"))
 summary(m1_age_confonunder <- glm(gv_viol ~ crit + age_years_decision, d[d$senat == 1, ], family = "binomial"))
