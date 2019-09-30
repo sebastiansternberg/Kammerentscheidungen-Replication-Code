@@ -331,6 +331,10 @@ $(document).ready(function () {
 <ul>
 <li>creates the variables for the analysis. In particular, it compares the actually sitting judges with the judges that are supposed to sit there on a given day. It also automatically checks the party label of the judges, that is, whether a red judge is replaced by a red or “black” judges and vice versa.</li>
 </ul>
+<p>Analysis.rmd</p>
+<ul>
+<li>Is a markdown file where all the analyses are run. Includes the main analyses and all the robustness checks plus a description about the codings etc.</li>
+</ul>
 </div>
 <div id="data-sets" class="section level2">
 <h2>Data Sets</h2>
@@ -343,9 +347,9 @@ $(document).ready(function () {
 <ul>
 <li>contains a lot of information about the biographies of the judges at the GFCC. This data set contains also the information about the party that nominated the judge, which is necessary for our analyses.</li>
 </ul>
-<p>judicialData_Sep16.txt:</p>
+<p>chamber_decision_cleaned.csv:</p>
 <ul>
-<li>contains all chamber decisions that are available on the webpage of the GFCC. You can find all code to replicate the webscraping in this <a href="https://github.com/sebastiansternberg/scraper-decisions-German-Federal-Constitutional-Court">Github Repository</a>.</li>
+<li>contains all chamber decisions that are available on the webpage of the GFCC from 1998-2018. You can find all code to replicate the webscraping in this <a href="https://github.com/sebastiansternberg/scraper-decisions-German-Federal-Constitutional-Court">Github Repository</a>.</li>
 </ul>
 </div>
 <div id="general-information" class="section level2">
@@ -360,28 +364,36 @@ $(document).ready(function () {
 <p>jeweils mit dem zuletzt genannten Mitglied beginnend, als Stellvertreter ein. This would lead to a replacement order of 321</p>
 <p>In the second senate, often the the seniority, beginning with the younges, is used. For instance:</p>
 <p>2010 Senate 2 Chamber 3 did consist of: Voßkuhle, Mellinghoff, Lübbe-Wolf. Came to Court (04/2008, 01/2001, 03/2002). Therefore the replacement would be: 132, because Voßkuhle is the youngest.</p>
-<p>Final data set consists of:</p>
+<p>The final data set used for the analysis is in folder in/data-input and is called “final_dataset.csv”. The data set with the full data (where the analysis data set was created from) is called “full_dataset.csv”.</p>
+<p>The <strong>final_dataset.csv</strong> contains the following variables:</p>
 <ul>
-<li><p>r1, r2, r3: The judges actual signing a decision.</p></li>
-<li><p>r1_f, r2_f, r3_f The judges formally sitting in this panel</p></li>
+<li>az: Aktenzeichen</li>
+<li>date: then date of the decision</li>
+<li>senat: the Senat the decision was decided in (either 1 or 2)</li>
+<li>anordnung: is the decision a BvQ or not. This info is directly from az</li>
+<li>link: the url to the decision:</li>
+<li>year: the year of the decision</li>
+<li>kammer: the number of the three-judge panel a decision was decided</li>
+<li>r1, r2, r3: The judges actual signing a decision.</li>
+<li><p>r1_f, r2_f, r3_f The judges formally sitting in this panel according to the RoP</p></li>
 <li><p>gv: The order of the judges who are going to replace an absente judge.</p></li>
-<li><p>ersetzt: The name(s) of the judges who are absente.</p></li>
-<li><p>ersatz: The name of the judges who are the replacement.</p></li>
+<li><p>ersetzt: The name(s) of the judges who are absent.</p></li>
+<li><p>ersatz: The name of the judges who are the replacement/substitution.</p></li>
+<li><p>konform: how the panel would look like if the replacement order is in according with the RoP</p></li>
+<li><p>crit: critical episode; this is, whether following the replacement order (RoP) would lead to a totally black or red chamber (a homogenous panel only consisting of justices with the same party label, e.h. three left or three right justices)</p></li>
+<li><p>c_nachgversatz: panel composition if the RoP was followed.</p></li>
+<li><p>which_gov: At which position in the order of the replacement is the actual replacement? 1 3 for instance means the first and then the third judge of the substitution order in accordance with the RoP are selected</p></li>
+<li><p>real_c: how many of the judges in the real/observed panel are red? zero means all justices are right, 1 means LRR, 2 means LLR, 3 means LLL.</p></li>
+<li><p>gv_viol: was the first rule of the substitution order according to the RoP violated or not.</p></li>
 </ul>
-<p>-konform: how the panel would look like if the replacement order is in according with the RoP</p>
-<ul>
-<li><p>crit: critical case; this is, whether following the replacement order (RoP) would lead to a totally black or red chamber.</p></li>
-<li><p>c_nachgversatz: kammerfarbe die mit ersatz nach gv entstehen würde</p></li>
-<li><p>which_gov: At which position in the order of the replacement is the actual replacement? 1 3 for instance means the first and then the third judge of the RoP are selected</p></li>
-<li><p>real_c which of the judges in the real chamber are red?</p></li>
-</ul>
-<p>ToDO:</p>
-<ul>
-<li>Datensatz beschreiben</li>
-<li>Master do anpassen</li>
-<li>Github dafür machen und rdm updaten</li>
-<li>Describe the robustness checks with one paragraph in appendix</li>
-</ul>
+</div>
+<div id="how-to-replicate-the-analyses" class="section level2">
+<h2>How to replicate the analyses</h2>
+<p>It is generally adviced to use a unix-system for the replication, because the German Umlaute can make the name merging tricky.</p>
+<ol style="list-style-type: decimal">
+<li><p>To replicate our results, you first use the <em>master.R</em> and follow the code. The <em>master.R</em> sources the r code which is necessary to create the final data set used for the analyses. It sources prep.formal.R, prep.case.R, code_vars.R. Once you have run this, you are ready to do the analyses.</p></li>
+<li><p>The analysis.rmd is a RMarkdown containing all the code for the main analysis and robustness checks. It also produces the graphs and the regression tables, and codes the variables necessary to do the robustness checks.</p></li>
+</ol>
 </div>
 </div>
 

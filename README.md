@@ -31,7 +31,7 @@ Analysis.rmd
 
 ## Data Sets
 
-DateInput contains:
+DateInput contains three data sets that are necessary to replicate our analyses.
 
 kammer-formal_utf.csv:
 
@@ -43,16 +43,15 @@ Liste_Richter_1_utf.csv:
 - contains a lot of information about the biographies of the judges at the GFCC. This data set contains also the information about the party that nominated the judge, which is necessary for our analyses. 
 
 
-judicialData_Sep16.txt:
+chamber_decision_cleaned.csv:
 
-- contains all chamber decisions that are available on the webpage of the GFCC. You can find all code to replicate the webscraping in this [Github Repository](https://github.com/sebastiansternberg/scraper-decisions-German-Federal-Constitutional-Court). 
+- contains all chamber decisions that are available on the webpage of the GFCC from 1998-2018. You can find all code to replicate the webscraping in this [Github Repository](https://github.com/sebastiansternberg/scraper-decisions-German-Federal-Constitutional-Court). 
 
 
 
 ## General information
 
 The Geschäftsverteilung (RoP) is published on the website of the GFCC as well. In the RoP, the judges determine who is sitting in which chamber. They also write down who is replacing judges who drop out, e.g. because of illness. Typical replacement rules read as follows:
-
 
 Bei Verhinderung ordentlicher Kammermitglieder treten:
 
@@ -67,52 +66,57 @@ In the second senate, often the the seniority, beginning with the younges, is us
 
 2010 Senate 2 Chamber 3 did consist of: Voßkuhle, Mellinghoff, Lübbe-Wolf. Came to Court (04/2008, 01/2001, 03/2002). Therefore the replacement would be: 132, because Voßkuhle is the youngest.
 
+The final data set used for the analysis is in folder in/data-input and is called "final_dataset.csv". The data set with the full data (where the analysis data set was created from) is called "full_dataset.csv". 
 
-Final data set consists of:
+The **final_dataset.csv** contains the following variables:
 
-
-
+- az: Aktenzeichen
+- date: then date of the decision
+- senat: the Senat the decision was decided in (either 1 or 2)
+- anordnung: is the decision a BvQ or not. This info is directly from az
+- link: the url to the decision: 
+- year: the year of the decision
+- kammer: the number of the three-judge panel a decision was decided
 - r1, r2, r3: 
-The judges actual signing a decision.
-
-
+The judges actual signing a decision. 
 - r1_f, r2_f, r3_f
-The judges formally sitting in this panel
+The judges formally sitting in this panel according to the RoP
 
 - gv:
  The order of the judges who are going to replace an absente judge. 
 
 - ersetzt:
-The name(s) of the judges who are absente.
+The name(s) of the judges who are absent.
 
 - ersatz:
-The name of the judges who are the replacement. 
+The name of the judges who are the replacement/substitution. 
 
--konform:
+- konform:
 how the panel would look like if the replacement order is in according with the RoP
 
 - crit:
-critical case; this is, whether following the replacement order (RoP) would lead to a totally black or red chamber.
+critical episode; this is, whether following the replacement order (RoP) would lead to a totally black or red chamber (a homogenous panel only consisting of justices with the same party label, e.h. three left or three right justices)
 
 - c_nachgversatz:
-kammerfarbe die mit ersatz nach gv entstehen würde
+panel composition if the RoP was followed. 
+
 
 - which_gov:
-At which position in the order of the replacement is the actual replacement? 1 3 for instance means the first and then the third judge of the RoP are selected 
+At which position in the order of the replacement is the actual replacement? 1 3 for instance means the first and then the third judge of the substitution order in accordance with the RoP are selected 
 
-- real_c
-which of the judges in the real chamber are red?
+- real_c:
+how many of the judges in the real/observed panel are red? zero means all justices are right, 1 means LRR, 2 means LLR, 3 means LLL.
+
+- gv_viol: was the first rule of the substitution order according to the RoP violated or not. 
 
 
+## How to replicate the analyses
 
+It is generally adviced to use a unix-system for the replication, because the German Umlaute can make the name merging tricky.
 
-ToDO:
+1. To replicate our results, you first use the *master.R* and follow the code. The *master.R* sources the r code which is necessary to create the final data set used for the analyses. It sources prep.formal.R, prep.case.R, code_vars.R. Once you have run this, you are ready to do the analyses.
 
-- Datensatz beschreiben
-- Master do anpassen
-- Github dafür machen und rdm updaten
-- Describe the robustness checks with one paragraph in appendix
-
+2. The analysis.rmd is a RMarkdown containing all the code for the main analysis and robustness checks. It also produces the graphs and the regression tables, and codes the variables necessary to do the robustness checks. 
 
 
 
