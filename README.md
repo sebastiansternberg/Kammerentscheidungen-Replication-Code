@@ -25,6 +25,9 @@ code_vars.R
 
 - creates the variables for the analysis. In particular, it compares the actually sitting judges with the judges that are supposed to sit there on a given day. It also automatically checks the party label of the judges, that is, whether a red judge is replaced by a red or "black" judges and vice versa. 
 
+Analysis.rmd
+
+- Is a markdown file where all the analyses are run. Includes the main analyses and all the robustness checks plus a description about the codings etc.
 
 ## Data Sets
 
@@ -105,16 +108,11 @@ which of the judges in the real chamber are red?
 
 ToDO:
 
-- descriptives machen/rausschreiben: overall N, overall dropouts, conservative drop out
-- check presidents workload
-- check simulation distribution slightly skewed
-- read German paper again and update data set and graps.
 - Datensatz beschreiben
 - Master do anpassen
-- Was passiert wenn man sich die Fälle ohne Präsident anschaut
-- More stories in the data, e.g. informal replacements etc.
 - Github dafür machen und rdm updaten
-- check some of the after 2016 cases whether they are correct deviations or not. 
+- Describe the robustness checks with one paragraph in appendix
+
 
 
 

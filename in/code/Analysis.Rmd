@@ -441,7 +441,7 @@ None of the models is sign. This means that in BvQ cases, judges do not have the
 
 ```{r}
 
-name_presidents <- c("Voßkuhle", "Papier", "Limbach", "Harbarth", "Kirchhof", "Hassemer", "Seidl")
+#name_presidents <- c("Voßkuhle", "Papier", "Limbach", "Harbarth", "Kirchhof", "Hassemer", "Seidl")
 
 d$date <- as.Date(d$date)
 
@@ -621,14 +621,12 @@ check_data$rowsum <- rowSums(check_data)
 
 d$dummy_LLR <- ifelse(check_data$rowsum == 2, 1, 0)
 
-
+#run models
 summary(m_LLR <- glm(crit~dummy_LLR, d, family = "binomial"))
 summary(m1_LLR <- glm(crit~dummy_LLR, d[d$senat == 1, ], family = "binomial"))
 summary(m2_LLR <- glm(crit~dummy_LLR, d[d$senat == 2, ], family = "binomial"))
 
-
-
-
+#replicate main analysis and control for LLR
 summary(m_LLR_main <- glm(gv_viol~ crit + dummy_LLR, d, family = "binomial"))
 summary(m1_LLR_main <- glm(gv_viol~ crit + dummy_LLR, d[d$senat == 1, ], family = "binomial"))
 summary(m2_LLR_main <- glm(gv_viol~ crit + dummy_LLR, d[d$senat == 2, ], family = "binomial"))
@@ -692,24 +690,31 @@ Does month explain when it comes to a critical case:
 
 ```{r}
 
-summary(m_month <- glm(crit ~ month, d, family = "binomial"))
-summary(m_month_s1 <- glm(crit ~ month, d[d$senat == 1, ], family = "binomial"))
-summary(m_month_s2 <- glm(crit ~ month, d[d$senat == 2, ], family = "binomial"))
+#combine multiple months into quarter
 
+d$Quarter <- ceiling(as.numeric(d$month) / 3)
 
-stargazer(m_month,m_month_s1, m_month_s2)
+#check coding:
+table(d$month, d$Quarter) #it worked
+
+d$Quarter <- as.factor(d$Quarter)
+
+summary(m_month <- glm(crit ~ Quarter, d, family = "binomial"))
+summary(m_month_s1 <- glm(crit ~ Quarter, d[d$senat == 1, ], family = "binomial"))
+summary(m_month_s2 <- glm(crit ~ Quarter, d[d$senat == 2, ], family = "binomial"))
 
 
 stargazer(m_month, m_month_s1, m_month_s2, 
           #type = "text"
           type = "latex"
-          ,title = "Balance check month"
+          ,title = "Balance check quarter"
           , digits = 1
           , dep.var.caption = "Critical Episode"
           , dep.var.labels.include = F
           , column.labels = c("Both Senates", "Senate 1", "Senate 2")
-          , covariate.labels = c("February", "March", "April", "May", "June", "July", "August", "September",
-                                 "October", "November", "December")
+          # , covariate.labels = c("February", "March", "April", "May", "June", "July", "August", "September",
+          #                        "October", "November", "December")
+          ,covariate.labels = c("Second Quarter", "Third Quarter", "Fourth Quarter")
           #, star.cutoffs = 0.1
           , summary.stat = "n"
           , omit.stat = c("ll", "aic")
