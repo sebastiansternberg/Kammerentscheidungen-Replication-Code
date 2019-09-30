@@ -112,7 +112,7 @@ how many of the judges in the real/observed panel are red? zero means all justic
 
 ## How to replicate the analyses
 
-It is generally adviced to use a unix-system for the replication, because the German Umlaute can make the name merging tricky.
+It is generally adviced to use a unix-system for the replication, because the German Umlaute can make the name merging tricky. Linux or Mac OS are adviced to use. You can directly replicate the analyses without pre-processing if you use the chamber_gfcc_analysisdata.dta Stata data set in the in/prepareddata folder:
 
 1. To replicate our results, you first use the *master.R* and follow the code. The *master.R* sources the r code which is necessary to create the final data set used for the analyses. It sources prep.formal.R, prep.case.R, code_vars.R. Once you have run this, you are ready to do the analyses.
 
