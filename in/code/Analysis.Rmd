@@ -5,6 +5,8 @@ date: "16 9 2019"
 output: html_document
 ---
 
+Run source outside of chunk if it does not work. The same goes for everything that saves or loads something.Just run it outside the chunk and it will work. 
+
 ```{r}
 rm(list = ls())
 
@@ -90,10 +92,10 @@ make.table <- function(d, path){
   print(t, include.rownames=F, file=path)
 }
 
+#make the tables per Senate and save them:
+
 make.table(d[d$senat==1,], "out/dtab1.tex")
 make.table(d[d$senat==2,], "out/dtab2.tex")
-
-
 
 ```
 
@@ -417,6 +419,7 @@ stargazer(m_bvq, m1_bvq, m2_bvq,
 None of the models is sign. This means that in BvQ cases, judges do not have the time/mind to take the party labels into account. 
 
 ## Check Presidents in Chambers (proxy for workload)
+
 Create a dummy for the chamber decisions where formally a president would be part in. 
 
 ```{r}
@@ -464,6 +467,17 @@ summary(m2 <- glm(gv_viol ~ crit + is_presidentinchamber, data=d[d$senat==2,], f
 # Check homogenous chambers per RoP
 
 ```{r}
+list_all_names <- c("Baer", "Britz", "Broß", "Bryde",
+                    "Eichberger", "Gerhardt", "Christ", "DiFabio", "Gaier", "Graßhof",
+                    "Grimm", "Haas","Hermanns", "Harbarth", "Hassemer", "Hoffmann-Riem", "Hohmann-Dennhardt",
+                    "Hömig", "Huber", "Jaeger", "Jentsch", "Kessal-Wulf", "Kirchhof", "König", "Kruis",
+                    "Kühling", "Landau", "Langenfeld", "Limbach", "Lübbe-Wolff", "Maidowski", "Masing",
+                    "Mellinghoff", "Müller", "Osterloh", "Ott", "Papier", "Paulus", "Radtke", "Schluckebier", "Seibert",
+                    "Seidl", "Sommer", "Steiner", "Voßkuhle", "Winter")
+
+
+
+
 
 col <- read.csv("in/data-input/Liste_Richter_1_utf.csv", sep="^", encoding = "UTF-8")
 
@@ -519,10 +533,7 @@ There is one black chamber: Broß DiFabio Landau (2008-2010).
 ## How many purely red or black chambers are circumvented by deviation?
 
 
-- real_c:
-which of the judges in the real chamber are red?
-
-eventuell mit grün und gelb schauen. Passt das dann so?
+- real_c: how many of the judges in the real chamber are red?
 
 real_c == 0:
 
@@ -535,10 +546,6 @@ Kühling Jaeger Steiner == 2 red one black
 real == 3:
 
 Limbach Graßhof Sommer == all red
-
-
-
-
 
 ```{r}
 #critical cases by deviation:
@@ -560,8 +567,6 @@ df_critical_deviation_notredorblack <- df_critical_deviation[df_critical_deviati
 
 Overall, there are three cases where there was a purely black chamber even after deviation (all in Senate 2) and 1 case where there was a purely red chamber even after deviation (also in Senate 2). 
 
-
-
 How many did avoid a purely black or red chamber:
 
 ```{r}
@@ -575,39 +580,6 @@ table(df_critical_deviation_notredorblack$real_c)
 
 table(df_critical_deviation_notredorblack$real_c[df_critical_deviation_notredorblack$senat == 1])
 table(df_critical_deviation_notredorblack$real_c[df_critical_deviation_notredorblack$senat == 2])
-
-
-```
-
-## Gibt es unterschiedlich viele 2L 1R Kammern bzw 2R 1L Kammern in kritischen wie unkritischen Faellen
-
-For this, we have to look at the **formal** composition of the chambers
-
-```{r}
-
-is_r1f_red <- ifelse(d$r1_f %in% redr, 1, 0)
-is_r2f_red <- ifelse(d$r2_f %in% redr, 1, 0)
-is_r3f_red <- ifelse(d$r3_f %in% redr, 1, 0)
-
-check_data <- cbind.data.frame(is_r1f_red, is_r2f_red, is_r3f_red)
-
-check_data$rowsum <- rowSums(check_data)
-
-d$dummy_LLR <- ifelse(check_data$rowsum == 2, 1, 0)
-
-#run models
-summary(m_LLR <- glm(crit~dummy_LLR, d, family = "binomial"))
-summary(m1_LLR <- glm(crit~dummy_LLR, d[d$senat == 1, ], family = "binomial"))
-summary(m2_LLR <- glm(crit~dummy_LLR, d[d$senat == 2, ], family = "binomial"))
-
-#replicate main analysis and control for LLR
-summary(m_LLR_main <- glm(gv_viol~ crit + dummy_LLR, d, family = "binomial"))
-summary(m1_LLR_main <- glm(gv_viol~ crit + dummy_LLR, d[d$senat == 1, ], family = "binomial"))
-summary(m2_LLR_main <- glm(gv_viol~ crit + dummy_LLR, d[d$senat == 2, ], family = "binomial"))
-
-
-
-
 
 
 ```
@@ -861,6 +833,190 @@ stargazer(m_age_confonunder, m1_age_confonunder, m2_age_confonunder,
           )
 
 ```
+
+## Robustness LLR and RRL:
+
+We use the formal composition of the chambers to see whether LLR or LRR can predict critical episodes or not.
+
+```{r}
+
+is_r1f_red <- ifelse(d$r1_f %in% redr, 1, 0)
+is_r2f_red <- ifelse(d$r2_f %in% redr, 1, 0)
+is_r3f_red <- ifelse(d$r3_f %in% redr, 1, 0)
+
+check_data <- cbind.data.frame(is_r1f_red, is_r2f_red, is_r3f_red)
+
+n_rop_red <- rowSums(check_data)
+
+d$dummy_LLR <- ifelse(n_rop_red == 2, 1, 0)
+
+#run the regression:
+
+summary(m_LLR <- glm(crit ~ dummy_LLR, d, family = "binomial"))
+summary(m1_LLR <- glm(crit ~ dummy_LLR, d[d$senat == 1, ], family = "binomial"))
+summary(m2_LLR <- glm(crit ~ dummy_LLR, d[d$senat == 2, ], family = "binomial"))
+
+#####make regression table:
+
+stargazer(m_LLR, m1_LLR, m2_LLR, 
+          #type = "text"
+          type = "latex"
+          ,title = "Balance check, LLR"
+          , digits = 1
+          , dep.var.caption = "RoP Deviation"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = c("LLR dummy")
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/LLR.tex"
+          )
+
+
+###controlling for it:
+
+summary(m_LLR_conf <- glm(gv_viol ~ crit + dummy_LLR, d, family = "binomial"))
+summary(m1_LLR_conf <- glm(gv_viol ~ crit + dummy_LLR, d[d$senat == 1, ], family = "binomial"))
+summary(m2_LLR_conf <- glm(gv_viol ~ crit + dummy_LLR, d[d$senat == 2, ], family = "binomial"))
+
+
+#make regression table
+
+
+stargazer(m_LLR_conf, m1_LLR_conf, m2_LLR_conf, 
+          #type = "text"
+          type = "latex"
+          ,title = "Main analysis, controlling for LLR panel"
+          , digits = 1
+          , dep.var.caption = "RoP Deviation"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = c("Critical Episode (=1)", "LLR dummy")
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/LLR_confounder.tex"
+          )
+
+
+
+
+
+
+```
+
+
+year of a decision:
+
+```{r}
+
+#code years into decades
+
+d$decade1990s <- ifelse(d$year < 2000, 1, 0)
+d$decade2000s <- ifelse(d$year < 2010, 1, 0)
+d$decade2010s <- ifelse(d$year > 2009, 1, 0)
+
+#convert to factor:
+
+d$decade_factor <- ifelse(d$decade1990s == 1, "1990s", "2000s")
+d$decade_factor[d$decade2010s == 1] <- "2010s" 
+
+table(d$decade_factor)
+
+d$decade_factor <- as.factor(d$decade_factor)
+
+#run the models including the decade dummies:
+
+summary(m_decade <- glm(crit ~ decade_factor, d, family = "binomial"))
+summary(m1_decade<- glm(crit ~ decade_factor, d[d$senat == 1, ], family = "binomial"))
+summary(m2_decade <- glm(crit ~ decade_factor, d[d$senat == 2, ], family = "binomial"))
+
+##make reg table
+stargazer(m_decade, m1_decade, m2_decade, 
+          #type = "text"
+          type = "latex"
+          ,title = "Main Analysis, controlling for decades"
+          , digits = 1
+          , dep.var.caption = "Critical Episodes"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = c("Decade Dummy 2000s", "Decade Dummy 2010s")
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/decades.tex"
+          )
+
+
+#replicate the main analysis:
+
+summary(m_decade_conf <- glm(gv_viol ~ crit + decade_factor, d, family = "binomial"))
+summary(m1_decade_conf<- glm(gv_viol ~ crit + decade_factor, d[d$senat == 1, ], family = "binomial"))
+summary(m2_decade_conf <- glm(gv_viol ~ crit + decade_factor, d[d$senat == 2, ], family = "binomial"))
+
+
+stargazer(m_decade_conf, m1_decade_conf, m2_decade_conf, 
+          #type = "text"
+          type = "latex"
+          ,title = "Main analysis, controlling for decades"
+          , digits = 1
+          , dep.var.caption = "RoP Deviation"
+          , dep.var.labels.include = F
+          , column.labels = c("Both Senates", "Senate 1", "Senate 2")
+          , covariate.labels = c("Critical Episode (=1)", "Decade Dummy 2000s", "Decade Dummy 2010s")
+          , summary.stat = "n"
+          , omit.stat = c("ll", "aic")
+          , model.numbers = F
+          , notes.align = "r"
+          , notes.append = FALSE
+          , out = "out/decades_confounder.tex"
+          )
+
+
+
+
+
+```
+
+
+Whether justices are law professors. WE DO NOT USE THIS PART IN THE PAPER. 
+
+
+```{r}
+
+
+# col <- read.csv("in/data-input/Liste_Richter_1_utf.csv", sep="^", encoding = "UTF-8")
+# 
+# col$last_name_r <- str_trim(clean.names(col$last_name_r))
+# col$last_name_r <- str_trim(str_replace_all(col$last_name_r, "\\(|\\)| ", ""))
+# col$first_name_r <- str_trim(col$first_name_r)
+# 
+# col <- col[!(col$last_name_r == "Müller" & col$first_name_r == "Gebhard"), ]
+# col <- col[!(col$last_name_r == "Kirchhof" & col$first_name_r == "Paul"), ]
+# 
+# table(col$prof_r)
+# 
+# prof_data <- col[col$last_name_r %in% list_all_names, ]
+# 
+# prof_data <- dplyr::select(prof_data, last_name_r, first_name, prof_r, )
+# 
+# #delect
+# 
+# #join to main data:
+# 
+# bla <- 
+
+
+
+```
+
 
 
 
